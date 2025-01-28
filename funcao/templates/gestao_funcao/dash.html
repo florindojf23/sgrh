@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h4>Dashboard Gest&atilde;o Fun&ccedil;&atilde;o</h4>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row input-group justify-content-center mb-10">
+
+							<div class="col-sm-8">
+								<form>
+									<input class="form-control" id="id_sigap_search" type="text" name="id_sigap_search" placeholder="Buscar Funcionario com Nome ou ID" autofocus="">
+								</form>
+							</div>
+							<div class="col-sm-8">
+								<div class="table-responsive">
+								<div id="searchResults" class="mt-3"></div>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row mb-10">
+							<div class="col-sm-3 mt-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{permanente|intcomma}}</h4>Funcion&aacute;rio Permanente<br>
+								</div>
+							</div>
+							<div class="col-sm-3 mt-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{aap|intcomma}}</h4> Funcion&aacute;rio AAP
+								</div>
+							</div>
+							<div class="col-sm-3 my-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{casuais|intcomma}}</h4> Funcion&aacute;rio Casuais
+								</div>
+							</div>
+							{% if nulo %}
+							<div class="col-sm-3 my-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{nulo|intcomma}}</h4> Funcion&aacute;rio Casuais
+								</div>
+							</div>
+							{% endif %}
+						</div>
+						<!--end::Table container-->
+					</div>
+					<input type="hidden" id="page" value="{% url 'DetalhoFuncionarioListaFuncao' 'FUNCIONARIO_ID_PLACEHOLDER' %}">
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script src="{% static 'assets/js/chart.min.js' %}"></script>
+<script src="{% static 'assets/js/chart.dataTables.js' %}"></script>
+
+
+		{% include 'ajax/ajax_busca_funcionario.html' %}
+
+
+		{% include 'exports/exports_custom1.html' %}
+{% endblock %}

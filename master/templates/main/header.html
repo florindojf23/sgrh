@@ -1,0 +1,226 @@
+{% load static %}
+
+					<!--begin::Header-->
+					<div id="kt_header" style="" class="header align-items-stretch">
+						<!--begin::Container-->
+						<div class="container-fluid d-flex align-items-stretch justify-content-between">
+							<!--begin::Aside mobile toggle-->
+							<div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show aside menu">
+								<div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
+									<!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+									<span class="svg-icon svg-icon-1">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+											<path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+											<path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+								</div>
+							</div>
+							<!--end::Aside mobile toggle-->
+							<!--begin::Mobile logo-->
+							<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+								<a href="{% url 'home' %}" class="d-lg-none">
+									<!-- <img alt="Logo" src="{% static 'assets/media/logos/logo-2.svg' %}" class="h-30px" /> -->
+									<h2 class="text-muted">{% if cores.syssigla %}
+									    {{ cores.syssigla }}
+									{% else %}
+									    SGRH
+									{% endif %}</h2>
+								</a>
+							</div>
+							<!--end::Mobile logo-->
+							<!--begin::Wrapper-->
+							<div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+								<!--begin::Navbar-->
+								<div class="d-flex align-items-stretch" id="kt_header_nav">
+									<!--begin::Menu wrapper-->
+									<div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+										<!--begin::Menu-->
+										
+										<!--end::Menu-->
+									</div>
+									<!--end::Menu wrapper-->
+								</div>
+								<!--end::Navbar-->
+								<!--begin::Toolbar wrapper-->
+								<div class="d-flex align-items-stretch flex-shrink-0">
+									<!--begin::Search-->
+									<!--end::Quick links-->
+									<div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
+										<!--begin::Menu wrapper-->
+										<div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+											<div class="p-4 bg-secondary" style="border-radius: 8px;">
+												<div style="position: absolute;top: 28px;left: 80%;font-size: 12px;margin-left: -4px;border-radius: 20px;" class="px-1 bg-warning text-white"><span id="notifbadge"></span></div>
+												<span class="bi bi-bell"></span>
+											</div>
+										</div>
+										<!--begin::User account menu-->
+										<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
+											<!--begin::Menu item-->
+											
+											<!--end::Menu item-->
+											<!--begin::Menu separator-->
+											
+											<!--end::Menu separator-->
+											<!--begin::Menu item-->
+											<div class="menu-item px-5">
+												<a href="{% url 'home' %}" class="menu-link px-5">Data Remata Liu Ona
+													(<span id="notifbadgedeadline"></span>)
+												</a>
+											</div>
+											<div class="menu-item px-5">
+												<a href="{% url 'home' %}" class="menu-link px-5">
+													 Data Remata Iha Aban
+													(<span id="notifbadgedeadlineaban"></span>)
+												</a>
+											</div>
+										</div>
+										<!--end::User account menu-->
+										<!--end::Menu wrapper-->
+									</div>
+
+									<!--begin::Theme mode-->
+									<div class="d-flex align-items-center ms-1 ms-lg-3">
+										<!--begin::Theme mode docs-->
+										{% if request.user.user_profile.first_name %}
+											{{request.user.user_profile.first_name}} {{request.user.user_profile.last_name}}
+										{% elif request.user.user_funcionario.funcionario.email %}
+											{{request.user.user_funcionario.funcionario.email}}
+										{% else %}
+											{% if request.user.email %}
+												{{request.user.email}}
+											{% else %}
+											users@gmail.com
+											{% endif %}
+										{% endif %}
+										<!--end::Theme mode docs-->
+									</div>
+									<!--end::Theme mode-->
+									<!--begin::User menu-->
+									
+									<div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
+										<!--begin::Menu wrapper-->
+										<div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+										{% if request.user.user_profile.image %}
+										<img src="{{request.user.user_profile.image.url}}" alt="user" />
+										{% elif request.user.user_funcionario.funcionario.id_sigap %}
+											{% if request.user.user_funcionario.funcionario.getImagemPessoal.id %}
+												<img src="{{request.user.user_profile.image.url}}" alt="user" />
+												<img src="data:image/png;base64,{{request.user.user_funcionario.funcionario.getImagemPessoal.dados}}" alt="Employee Image" width="50" height="50">
+											{% else %}
+												<img src="{% static 'img/pessoa_neutra.png' %}" alt="image" width="50" height="50" border="" class="" />
+											{% endif %}
+										{% else %}
+											<img src="{% static 'img/pessoa_neutra.png' %}" alt="image" width="50" height="50" border="1" class="" />
+										{% endif %}
+										</div>
+										<!--begin::User account menu-->
+										<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
+											<!--begin::Menu item-->
+											<div class="menu-item px-3">
+												<div class="menu-content d-flex align-items-center px-3">
+													<!--begin::Avatar-->
+													<div class="symbol symbol-50px me-5">
+														{% if request.user.user_profile.image %}
+														<img src="{{request.user.user_profile.image.url}}" alt="user" />
+														{% elif request.user.user_funcionario.funcionario.id_sigap %}
+															{% if request.user.user_funcionario.funcionario.getImagemPessoal.id %}
+																<img src="{{request.user.user_profile.image.url}}" alt="user" />
+																<img src="data:image/png;base64,{{request.user.user_funcionario.funcionario.getImagemPessoal.dados}}" alt="Employee Image" width="50" height="50">
+															{% else %}
+																<img src="{% static 'img/pessoa_neutra.png' %}" alt="image" width="50" height="50" border="" class="" />
+															{% endif %}
+														{% else %}
+														<img alt="Logo" src="{% static 'assets/media/avatars/300-1.jpg' %}" />
+														{% endif %}
+													</div>
+													<!--end::Avatar-->
+													<!--begin::Username-->
+													<div class="d-flex flex-column">
+														<div class="fw-bolder d-flex align-items-center fs-5">
+															{% if request.user.user_profile.first_name %}
+																{{request.user.user_profile.first_name}}
+															{% elif request.user.user_funcionario.funcionario.nome %}
+																{{request.user.user_funcionario.funcionario.nome}}
+															{%else%}
+																SGRH-ME USER
+															{%endif%}
+														</div>
+															{% if request.user.email %}
+														<a href="mailto:{{request.user.email}}" class="fw-bold text-muted text-hover-primary fs-7">
+																{{request.user.email}}
+														</a>
+															{% elif request.user.user_funcionario.funcionario.email %}
+																<a href="mailto:{{request.user.email}}" class="fw-bold text-muted text-hover-primary fs-7">
+																	{{request.user.user_funcionario.funcionario.email}}
+																</a>
+															{%else%}
+														<a href="#" class="fw-bold text-muted text-hover-primary fs-7">
+																max@kt.com
+														</a>
+															{%endif%}
+													</div>
+													<!--end::Username-->
+												</div>
+											</div>
+											<!--end::Menu item-->
+											<!--begin::Menu separator-->
+											<div class="menu-item px-5">
+												<span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">
+													{% if request.user.groups.all.0.name %}
+													{{ request.user.groups.all.0.name }}
+													{%else%}
+													No Group
+													{%endif%}
+												</span>
+											</div>
+											<div class="separator my-2"></div>
+											<!--end::Menu separator-->
+											<!--begin::Menu item-->
+											<div class="menu-item px-5">
+												<a href="{% url 'user-profile' %}" class="menu-link px-5">Meu Perfil</a>
+											</div>
+											
+											<!--begin::Menu item-->
+											<div class="menu-item px-5 my-1">
+												<a href="{% url 'user-account' %}" class="menu-link px-5">Configura&ccedil;&atilde;o de Conta</a>
+											</div>
+											{% if request.user.groups.all.0.name == 'admin' %}
+											<div class="menu-item px-5 my-1">
+												<a href="{% url 'configuracao-sistema' %}" class="menu-link px-5">Configura&ccedil;&atilde;o de Sistema</a>
+											</div>
+											<div class="menu-item px-5 my-1">
+												<a href="{% url 'controlo-gestoes' %}" class="menu-link px-5">Controlo de Gest&otilde;es</a>
+											</div>
+											{% endif %}
+											<!--end::Menu item-->
+											<div class="separator my-2"></div>
+											<!--begin::Menu item-->
+											<div class="menu-item px-5">
+												<a href="{% url 'logout' %}" class="menu-link px-5">Sign Out</a>
+											</div>
+											<!--end::Menu item-->
+											<!--begin::Menu separator-->
+											<!--end::Menu separator-->
+											<!--begin::Menu item-->
+											
+											<!--end::Menu item-->
+										</div>
+										<!--end::User account menu-->
+										<!--end::Menu wrapper-->
+									</div>
+									<!--end::User menu-->
+									<!--begin::Header menu toggle-->
+									
+									<!--end::Header menu toggle-->
+								</div>
+								<!--end::Toolbar wrapper-->
+							</div>
+							<!--end::Wrapper-->
+						</div>
+						<!--end::Container-->
+					</div>
+					<!--end::Header-->
+					
+				

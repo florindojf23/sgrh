@@ -1,0 +1,27 @@
+<!-- countdown_timer.html -->
+<script>
+    // Function to update countdown timer
+    function updateCountdown(seconds) {
+        var timer = setInterval(function() {
+            // Calculate minutes and seconds
+            var minutes = Math.floor(seconds / 60);
+            var remainingSeconds = seconds % 60;
+
+            // Display the timer in the element with id="countdown"
+            document.getElementById('countdown').innerHTML = minutes + 'm ' + remainingSeconds + 's';
+
+            // Decrement the remaining time
+            seconds--;
+
+            // If the timer reaches 0, redirect to logout page or perform logout action
+            if (seconds < 0) {
+                clearInterval(timer);
+                // Redirect to logout page or perform logout action
+                window.location.href = '/logout';
+            }
+        }, 1000); // Update every second
+    }
+
+    // Call updateCountdown function with session timeout value
+    updateCountdown({{ request.session.get_expiry_age }});
+</script>

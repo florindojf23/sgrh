@@ -1,0 +1,68 @@
+{% load static %}
+<link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'assets/datatables/js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/datatables/js/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'assets/datatables/css/searchBuilder.dataTables.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/datatables/css/searchBuilder.bootstrap4.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/datatables/css/buttons.dataTables.min.css' %}" rel="stylesheet">
+<style type="text/css">
+    .dtsb-searchBuilder{
+        background: #86868c45 !important;
+        padding: 5px
+    }
+    .dt-button, .dtsb-add {
+        background: white !important;
+    }
+</style>
+<script src="{% static 'assets/datatables/js/dataTables.searchBuilder.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/searchBuilder.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/jszip.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/pdfmake.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/vfs_fonts.js' %}"></script>
+<script src="{% static 'assets/datatables/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'assets/datatables/js/buttons.colVis.min.js' %}"></script>
+
+<script src="{% static 'assets/datatables/datatables.js' %}"></script>
+<script>
+$(document).ready( function () {
+    var table = $('#exportDataTable').removeAttr('width').DataTable( {
+        "scrollY": "50vh",
+        "scrollX": true,
+        "scrollCollapse": true,
+        "paging": true,
+        searchBuilder: true,
+        buttons:[
+            {
+                extend: 'excelHtml5', autoFilter: true, sheetName: 'Exported data'
+            },
+            {
+                extend: 'print', autoPrint: true, orientation: 'landscape', pageSize: 'LEGAL',
+                exportOptions: { columns: ':visible' },
+                messageBottom: '<br/><br/><br/><table border=0 width=80%>\
+                    <tr><td colspan=2>Dili, __________, Fulan ____________ 20_______<br/><br/><br/><br/></td></tr>\
+                <tr><td>(______________________________________________)</td></tr>\
+                    </table>',
+                title: '<h4 class="mb-3 text-center">{{title}}</h4>',
+                customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' )
+                        .prepend(
+                            '<center><img src="http://localhost:8000/static/assets/media/logos/cop.png" width="80%"/></center><br/>'
+                        );
+
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact','table-bordered' )
+                        .css( 'font-size', 'inherit' );
+                }
+            },
+            'colvis',
+        ],
+        dom: 'Bfrtip',
+        "deferRender": true
+    });
+    table.searchBuilder.container().prependTo(table.table().container());
+} );
+</script>

@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				{% include 'desempenho/head_tab_ad.html' %}
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h3 class="card-title align-items-start flex-column">
+							<span class="card-label fw-bolder fs-3 mb-1">Dashboard Avalia&ccedil;&atilde;o Desempenho</span>
+							
+						</h3>
+						<div>
+							<a href="{% url 'RegistaNovoFuncionario' %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+							<i class="bi bi-person-plus"></i>
+							Registar Nova Avaliacao Desempenho</a>
+						</div>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row input-group justify-content-center mb-10">
+
+							<div class="col-sm-8">
+								<form>
+									<input class="form-control" id="id_sigap_search" type="text" name="id_sigap_search" placeholder="Buscar Funcionario com Nome ou ID" autofocus="">
+								</form>
+							</div>
+							<div class="col-sm-8">
+								<div class="table-responsive">
+								<div id="searchResults" class="mt-3"></div>
+								<input type="hidden" id="page" value="{% url 'DetalhoFuncionarioListaAD' 'FUNCIONARIO_ID_PLACEHOLDER' %}">
+								</div>
+
+							</div>
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+{% include 'ajax/ajax_busca_funcionario.html' %}
+{% endblock %}

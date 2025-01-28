@@ -1,0 +1,169 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h3 class="card-title align-items-start flex-column">
+							<!-- <span class="card-label fw-bolder fs-3 mb-1">Lista Utilizador</span> -->
+							<span class="text-muted mt-1 fw-bold fs-7">Total Carreiras :: {{objects|length}}</span>
+						</h3>
+						<div>
+							<a href="{% url 'RegistaNovoFuncionario' %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+							<i class="bi bi-person-plus"></i>
+							<!--end::Svg Icon-->Registar Nova Carreira</a>
+						</div>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="table-responsive">
+							<!--begin::Table-->
+							<table id="example" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+								<!--begin::Table head-->
+								<thead>
+									<tr>
+							            <th>
+							            	<select id="regime" name="regime" class="form-control">
+							            		<option value="">Seleciona Regime</option>
+							            		{% for i in regime %}
+							            		<option value="{{i.id_regime}}">{{i.regime}}</option>
+							            		{% endfor %}
+							            	</select>
+							            </th>
+							            <th>
+							            	<select id="categoria" name="categoria" class="form-control">
+							            	</select>
+							            </th>
+							            
+							            
+							        </tr>
+									<tr class="fw-bolder text-muted">
+										<!-- <th class="min-w-10px">Nu.</th> -->
+										<th class="min-w-140px">Regime</th>
+										<th class="min-w-120px">Categoria</th>
+										<th class="min-w-120px">Escal&atilde;o</th>
+										<th class="min-w-120px">&Iacute;ndice</th>
+										<th class="min-w-120px">Estado</th>
+										<th class="min-w-100px text-center">Acao</th>
+									</tr>
+								</thead>
+								<!--end::Table head-->
+								<!--begin::Table body-->
+								
+								<!--end::Table body-->
+							</table>
+							<!--end::Table-->
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block script %}
+<link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'assets/datatables/js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/datatables/js/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            processing: true,
+            serverSide: true,
+            
+            ajax: {
+	            url: '{% url "carreira_data" %}',
+	            data: function(d) {
+	                d.regime = $('#regime').val();
+	                d.categoria = $('#categoria').val();
+	                // d.controlo_ativo = $('#controlo_ativo').val();
+	                // d.sexo = $('#sexo').val();
+	            }
+	        },
+            columns: [
+                { data: 'regime' },
+                { data: 'categoria' },
+                { data: 'escalao' },
+                { 	data: 'indice',
+                	className: 'text-center'
+                },
+                {
+				    data: null,  // Use null since we're combining multiple fields
+				    render: function(data, type, row) {
+				        // Define badge for estado
+				        let estadoBadge;
+				        if (row.estado === 'Ativo') {
+				            estadoBadge = '<span class="badge badge-light-success"><small>' + row.estado + '</small></span>';
+				        } else if (row.estado === 'Não Ativo') {
+				            estadoBadge = '<span class="badge badge-light-danger"><small>' + row.estado + '</small></span>';
+				        } else {
+				            estadoBadge = row.estado || '';  // Default text if none of the conditions match
+				        }
+
+				        return '<div class="d-flex flex-column align-items-center">'  + estadoBadge + '</div>';
+				    }
+				},
+            ],
+            order: [[0, 'asc']],
+            pageLength: 10 , // Adjust the number of rows per page as needed
+            initComplete: function() {
+	            this.api().columns().every(function() {
+	                var column = this;
+	                console.log("column"+column)
+	                $('input', column.header()).on('keyup change', function() {
+	                    column.search(this.value).draw();
+	                });
+	            });
+	        }
+            
+        });
+        // Add event listener for search inputs
+        $('#regime').on('change', function () {
+	        table.draw();
+	        const regimeId = this.value;
+		    fetch(`/funcao/ajax/load-categorias/?regime_id=${regimeId}`)
+		        .then(response => response.json())
+		        .then(data => {
+		            const categoriaSelect = document.getElementById("categoria");
+		            categoriaSelect.innerHTML = '<option value="">Seleciona Categoria</option>';
+		            data.forEach(categoria => {
+		                categoriaSelect.innerHTML += `<option value="${categoria.id_categoria}">${categoria.categoria}</option>`;
+		            });
+		        });
+	    });
+	    // $('#id_sigap').on('keyup', function () {
+	    //     table.draw();
+	    // });
+	    $('#categoria').on('change', function () {
+	        table.draw();
+	    });
+	    // $('#sexo').on('change', function () {
+	    //     table.draw();
+	    // });
+    });
+</script>
+
+
+{% endblock %}

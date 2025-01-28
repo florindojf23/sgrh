@@ -1,0 +1,386 @@
+{% load static %}
+<div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-9 pb-0">
+        <!--begin::Details-->
+        <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+            <!--begin: Pic-->
+            <div class="me-7 mb-4">
+                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                    {% if objects.imagemfuncionario.dados %}
+                    <img src="data:image/png;base64,{{ objects.imagemfuncionario.dados }}" alt="" class="zoom" />
+                    {% else %}
+                    <img src="{% static 'img/pessoa_neutra.png' %}" alt="image" border="1" class="border border-secondary" />
+                    {% endif %}
+                    <div style="position: absolute;right: 0px;top: 2px;font-size: 12px;margin-left: -3px;" class="
+                    {% if objects.controlo_ativo == 'Ativo' %}
+                        bg-primary
+                    {% elif objects.controlo_ativo == 'Não Exercício' %}
+                        bg-warning
+                    {% elif objects.controlo_ativo == 'Saída Definitiva' %}
+                        bg-danger
+                    {% endif %}
+                     text-white px-1"> {{objects.controlo_ativo}} </div>
+                     <div class="position-absolute translate-middle left-0 start-100">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#cameraModal" title="Tirar Fotografia">
+                        <span class="badge badge-secondary"><i class="bi bi-camera"></i></span>
+                        </a>
+                    </div>
+                    
+                </div>
+                <!-- modal -->
+                <!-- Image Modal -->
+
+
+
+                <!-- end modal -->
+            </div>
+            <!--end::Pic-->
+            <!--begin::Info-->
+            <div class="flex-grow-1">
+                <!--begin::Title-->
+                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                    <!--begin::User-->
+                    <div class="d-flex flex-column">
+                        <!--begin::Name-->
+                        <div class="d-flex align-items-center mb-2">
+                            <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1">{{objects.nome}}
+                            {% if objects.id_sigap %}
+                                ({{objects.id_sigap}})
+                            {% endif %}
+                            </a>
+                               
+                        </div>
+                        <!--end::Name-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-wrap fw-bold fs-6 mb-4 pe-2">
+                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                            <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
+                            <span class="svg-icon svg-icon-4 me-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path opacity="0.3" d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z" fill="black" />
+                                    <path d="M12 22C14.6 22 17 21 18.7 19.4C17.9 16.9 15.2 15 12 15C8.8 15 6.09999 16.9 5.29999 19.4C6.99999 21 9.4 22 12 22Z" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->{{objects.sexo}}</a>
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen018.svg-->
+                            
+                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                            <!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
+                            <!--end::Svg Icon-->Data Nascimento: {{objects.lugar_nascimento}}, {{objects.data_nascimento|date:'d-m-Y'}}</a>
+                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                            <!--end::Svg Icon-->Idade: {{objects.getidade}}</a>
+                        </div>
+                        <div class="d-flex flex-wrap fw-bold fs-6 mb-2 pe-2 text-gray-400 text-hover-primary">
+                            <b class="mx-2">{{objects.getColocacao.dg.instituicao.nome}} </b> 
+                            {% if objects.getColocacao.dn %}
+                                - {{objects.getColocacao.dn.nome}} 
+                            {% endif %}
+                            {% if objects.getColocacao.dep %}
+                                - {{objects.getColocacao.dep.nome}} 
+                            {% endif %}
+                            {% if objects.getColocacao.sec %}
+                                - {{objects.getColocacao.sec.nome}} 
+                            {% endif %}
+                            {% if objects.getColocacao.escola %}
+                                - {{objects.getColocacao.escola.nome}} 
+                            {% endif %}
+                        </div>
+                        {% if objects.getContratacao %}
+                        <div class="d-flex flex-wrap fw-bold fs-6 mb-4 pe-2 text-gray-400 text-hover-primary">
+                            <p class="mx-2">{{objects.getContratacao.regime.regime}} 
+                            {% if objects.getContratacao.categoria %}
+                                - {{objects.getContratacao.categoria.categoria}} 
+                            {% endif %}
+                            {% if objects.getContratacao.escalao %}
+                                - Escal&atilde;o {{objects.getContratacao.escalao.escalao}} 
+                            {% endif %}
+                            {% if objects.getContratacao.indice %}
+                                - &Iacute;ndice $ {{objects.getContratacao.indice.indice}} 
+                            {% endif %}
+                            (AAP)</p>
+                        </div>
+                        {% endif %}
+                        {% if objects.getPermanente %}
+                        <div class="d-flex flex-wrap fw-bold fs-6 mb-4 pe-2 text-gray-400 text-hover-primary">
+                            <p class="mx-2">{{objects.getPermanente.regime.regime}} 
+                            {% if objects.getPermanente.categoria %}
+                                - {{objects.getPermanente.categoria.categoria}} 
+                            {% endif %}
+                            {% if objects.getPermanente.escalao %}
+                                - Escal&atilde;o {{objects.getPermanente.escalao.escalao}} 
+                            {% endif %}
+                            {% if objects.getPermanente.indice %}
+                                - &Iacute;ndice $ {{objects.getPermanente.indice.indice}} 
+                            {% endif %}
+                            (Permanente)</p>
+                        </div>
+                        {% endif %}
+                        <!--end::Info-->
+                    </div>
+                    <!--end::User-->
+                    
+                </div>
+                <!--end::Title-->
+                <!--begin::Stats-->
+                <div class="d-flex flex-wrap flex-stack">
+                    <!--begin::Wrapper-->
+                    <!-- <div class="d-flex flex-column flex-grow-1 pe-8">
+                        <div class="d-flex flex-wrap">
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3 text-center">
+                                <div class="">
+                                    <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{objects.getidade}}" data-kt-countup-prefix="">0</div>
+                                </div>
+                                <div class="fw-bold fs-6 text-gray-400">Idade</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--end::Wrapper-->
+                    <!--begin::Progress-->
+                    <!-- <div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
+                        <div class="d-flex justify-content-between w-100 mt-auto mb-2">
+                            <span class="fw-bold fs-6 text-gray-400">Profile Compleation</span>
+                            <span class="fw-bolder fs-6">50%</span>
+                        </div>
+                        <div class="h-5px mx-3 w-100 bg-light mb-3">
+                            <div class="bg-success rounded h-5px" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div> -->
+                    <!--end::Progress-->
+                </div>
+                <!--end::Stats-->
+            </div>
+            <!--end::Info-->
+        </div>
+        <!--end::Details-->
+        <!--begin::Navs-->
+        </div>
+        <ul class="nav nav-stretch p-2 nav-line-tabs nav-line-tabs-2x fs-6 fw-bolder" style="background-color: rgb(19, 32, 52) !important;border-bottom: 5px solid #8a9596;">
+            <!--begin::Nav item-->
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_fun' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{activeDadosPessoais}}" href="{% url 'DetailFuncionario' objects.id %}">Dados Pessoais</a>
+                {% elif page == 'alterar_fun' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{activeDadosPessoais}}" href="{% url 'AtualizarFuncionario' objects.id %}">Alterar Dados Pessoais</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{activeDadosPessoais}}" href="{% url 'DetailFuncionario' objects.id %}">Dados Pessoais</a>
+                {% endif %}
+            </li>
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_funcao' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_fun_list_fun}}" href="{% url 'DetalhoFuncionarioListaFuncao' objects.id %}">Fun&ccedil;&atilde;o
+                </a>
+                {% elif page == 'form_funcao_fun' and active_alterar_funcao_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0  py-5 active" href="{% url 'DetalhoFuncionarioListaFuncao' objects.id %}">Alterar Fun&ccedil;&atilde;o
+                {% elif page == 'form_funcao_fun' and active_inserir_funcao_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0  py-5 active" href="{% url 'DetalhoFuncionarioListaFuncao' objects.id %}">Inserir Fun&ccedil;&atilde;o
+                </a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_funcao_fun}}" href="{% url 'DetalhoFuncionarioListaFuncao' objects.id %}">Fun&ccedil;&atilde;o
+                </a>
+                {% endif %}
+            </li>
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_colocacao' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_col_list_fun}}" href="{% url 'DetalhoFuncionarioListaColocacao' objects.id %}">Coloca&ccedil;&atilde;o</a>
+                {% elif page == 'form_colocacao_fun' and active_inserir_colocacao_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_colocacao_fun}}" href="{% url 'DetalhoFuncionarioListaColocacao' objects.id %}">Inserir Coloca&ccedil;&atilde;o</a>
+                {% elif page == 'form_colocacao_fun' and active_alterar_colocacao_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_alterar_colocacao_fun}}" href="{% url 'DetalhoFuncionarioListaColocacao' objects.id %}">Alterar Coloca&ccedil;&atilde;o</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_col_list_fun}}" href="{% url 'DetalhoFuncionarioListaColocacao' objects.id %}">Coloca&ccedil;&atilde;o</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_ad' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_fun_list_ad}}" href="{% url 'DetalhoFuncionarioListaAD' objects.id %}">Avalia&ccedil;&atilde;o Desempenho</a>
+                {% elif page == 'form_ad_fun' and active_inserir_ad_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_ad_fun}}" href="{% url 'DetalhoFuncionarioListaAD' objects.id %}">Inserir Avalia&ccedil;&atilde;o</a>
+                {% elif page == 'form_ad_fun' and active_alterar_ad_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_alterar_ad_fun}}" href="{% url 'DetalhoFuncionarioListaAD' objects.id %}">Alterar Avalia&ccedil;&atilde;o</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_fun_list_ad}}" href="{% url 'DetalhoFuncionarioListaAD' objects.id %}">Avalia&ccedil;&atilde;o Desempenho</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_hab' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_fun_list_hab}}" href="{% url 'DetalhoFuncionarioListaHab' objects.id %}">Habilita&ccedil;&atilde;o Acad&eacute;mica</a>
+                {% elif page == 'form_hab_fun' and active_inserir_hab_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_hab_fun}}" href="{% url 'DetalhoFuncionarioListaHab' objects.id %}">Inserir Habilita&ccedil;&atilde;o</a>
+                {% elif page == 'form_hab_fun' and active_alterar_hab_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_alterar_hab_fun}}" href="{% url 'DetalhoFuncionarioListaHab' objects.id %}">Alterar Habilita&ccedil;&atilde;o</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_fun_list_hab}}" href="{% url 'DetalhoFuncionarioListaHab' objects.id %}">Habilita&ccedil;&atilde;o Acad&eacute;mica</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_nao_exercicio' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_nexer_list_fun}}" href="{% url 'DetalhoFuncionarioListaNaoExercicio' objects.id %}">N&atilde;o Exerc&iacute;cio</a>
+                {% elif page == 'form_nao_exercicio_fun' and active_inserir_fne_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_fne_fun}}" href="{% url 'DetalhoFuncionarioListaNaoExercicio' objects.id %}">Inserir N&atilde;o Exerc&iacute;cio</a>
+                {% elif page == 'form_nao_exercicio_fun' and active_alterar_fne_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_alterar_fne_fun}}"    href="{% url 'DetalhoFuncionarioListaNaoExercicio' objects.id %}">Alterar N&atilde;o Exerc&iacute;cio</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_nexer_list_fun}}" href="{% url 'DetalhoFuncionarioListaNaoExercicio' objects.id %}">N&atilde;o Exerc&iacute;cio</a>
+                {% endif %}
+            </li>
+            <li class="nav-item mt-2">
+                {% if page == 'detalho_funcionario_lista_saida' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_saida_list_fun}}" href="{% url 'DetalhoFuncionarioListaSaida' objects.id %}">Sa&iacute;da Definitiva</a>
+                {% elif page == 'form_saida_fun' and active_inserir_fsd_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_inserir_fsd_fun}}" href="{% url 'DetalhoFuncionarioListaSaida' objects.id %}">Inserir Sa&iacute;da Definitiva</a>
+                {% elif page == 'form_saida_fun' and active_alterar_fsd_fun == 'active' %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_alterar_fsd_fun}}" href="{% url 'DetalhoFuncionarioListaSaida' objects.id %}">Alterar Sa&iacute;da Definitiva</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 mx-6 py-5 {{active_det_saida_list_fun}}" href="{% url 'DetalhoFuncionarioListaSaida' objects.id %}">Sa&iacute;da Definitiva</a>
+                {% endif %}
+            </li>
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+           <!--  <li class="nav-item mt-2">
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_loginhistory}}" href="{% url 'user-login-history' %}"></a>
+            </li> -->
+            <!--end::Nav item-->
+            
+        </ul>
+        <!--begin::Navs-->
+    
+</div>
+
+<!-- modal -->
+<!-- Image Modal -->
+
+<!-- Modal Structure -->
+<div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="cameraModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cameraModalLabel">Capture Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <video id="video" autoplay style="width: 100%; max-width: 400px;"></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <button id="capture" class="btn btn-primary mt-2">Capture</button>
+      </div>
+      <div class="modal-footer">
+        <img id="imagePreview" alt="Preview" style="display: none; width: 100%; max-width: 400px;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="upload-btn" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script type="text/javascript">
+    const uploadUrl = "{% url 'updatedImageFun1' objects.id %}";
+    const redirectUrl = "{% url 'DetailFuncionario' objects.id %}";
+    console.log("uploadUrl:" + uploadUrl);
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const imagePreview = document.getElementById('imagePreview');
+    let imageData = null; // Variable to hold the captured image data
+
+    // Start camera when modal opens
+    document.getElementById('cameraModal').addEventListener('show.bs.modal', async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        } catch (error) {
+            console.error("Unable to access camera:", error);
+        }
+    });
+
+    // Capture and display image
+    document.getElementById('capture').addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        imageData = canvas.toDataURL('image/png'); // Store captured image data
+        imagePreview.src = imageData;
+        imagePreview.style.display = 'block';
+    });
+
+    // Upload the captured image when upload button is clicked
+    document.getElementById('upload-btn').addEventListener('click', () => {
+        if (!imageData) { // Check if an image has been captured
+            alert("No image captured. Please capture an image first.");
+            return; // Exit the function if no image data
+        }
+
+        // Create a new canvas for cropping
+        const croppedCanvas = document.createElement('canvas');
+        const ctx = croppedCanvas.getContext('2d');
+        const aspectRatio = 3 / 4; // 3:4 aspect ratio
+
+        // Calculate dimensions for cropping
+        let cropWidth, cropHeight;
+        if (canvas.width / canvas.height > aspectRatio) {
+            // Wider than 3:4
+            cropHeight = canvas.height;
+            cropWidth = cropHeight * aspectRatio;
+        } else {
+            // Taller than 3:4
+            cropWidth = canvas.width;
+            cropHeight = cropWidth / aspectRatio;
+        }
+
+        // Calculate cropping position
+        const xOffset = (canvas.width - cropWidth) / 2;
+        const yOffset = (canvas.height - cropHeight) / 2;
+
+        // Set the dimensions of the cropped canvas
+        croppedCanvas.width = cropWidth;
+        croppedCanvas.height = cropHeight;
+
+        // Draw the cropped image
+        ctx.drawImage(canvas, xOffset, yOffset, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+        
+        // Get the cropped image data
+        const croppedImageData = croppedCanvas.toDataURL('image/png');
+
+        // Send to server
+        fetch(uploadUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'  // Ensure the CSRF token is correctly rendered here
+            },
+            body: new URLSearchParams({ image: croppedImageData }) // Use URLSearchParams for a simpler form data approach
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Image uploaded successfully!");
+                // Redirect to another page upon success
+                window.location.href = redirectUrl; // Replace with the desired URL
+            } else {
+                alert("Upload failed: " + data.error);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred: " + error.message);
+        });
+    });
+
+</script>
+
+
+
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+

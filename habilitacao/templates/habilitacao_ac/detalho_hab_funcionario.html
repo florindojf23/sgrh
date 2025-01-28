@@ -1,0 +1,87 @@
+{% extends 'funcionario/detalho.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_funcionario_detail_tab %}
+
+
+<div class="card mt-2 mb-5">
+	<div class="card-header border-0 pt-5">
+		<div>Ficha Habilitação Acad&eacute;mica</div>
+		<div>
+		{% if page == 'detalho_funcionario_lista_hab' %}
+			<a href="{% url 'DetalhoFuncionarioRegistaHab' objects.id %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+			<i class="bi bi-plus-square"></i>Inserir Ficha Habilitação</a>
+		{% endif %}
+		</div>
+	</div>
+	<div class="card-body">
+		
+		<div class="table-responsive">
+			<table class="table table-sm w-100">
+				<thead>
+					<tr class="text-left">
+						<th>Data Habilita&ccedil;&atilde;o</th>
+						<th>N&iacute;vel Habilitação</th>
+						<th>Curso</th>
+						<th>Pa&iacute;s</th>
+						<th class="text-center">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for data in objects1 %}
+					<tr class="text-left">
+						<td>{{data.data_habilitacao|date:"d-m-Y"}}</td>
+						<td>{{data.nivel_habilitacao.nivel_habilitacao}}</td>
+						<td>{{data.curso.nome_curso}}</td>
+						<td>{{data.entidade.pais}}</td>
+						<td class="text-center">
+							<a href="{% url 'DetalhoFuncionarioAlteraHab' data.id %}" class="btn btn-sm btn-light-primary"><i class="bi bi-pencil-square"></i></a>
+							<a href="#" data-bs-toggle="modal" data-bs-target="#desabilitar_ad_{{data.id_avaliacao_desempenho}}" class="btn btn-sm btn-light-danger btn-active-danger" >
+							<i class="bi bi-trash"></i></a>
+						</td>
+					</tr>
+					
+					<div class="modal fade" id="desabilitar_ad_{{data.id_avaliacao_desempenho}}" tabindex="-1">
+					    <div class="modal-dialog modal-dialog-centered">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					        </div>
+					        <div class="modal-body">
+					            <div class="col-12 text-center">
+					            	<img src="{% static 'img/danger_alert_img.png' %}" height="150px">
+					            	<h3>
+					            	Você tem certeza para desabilitar esse dados?
+					            	</h3>
+					            	<p class="text-muted">você não pode reverter dados de Avalia&ccedil;&atilde;o do ano {{data.ano_ad}} !</p>
+					            </div>
+					            <div class="d-flex justify-content-center mt-5">
+					              <button data-bs-dismiss="modal" type="button" class="btn btn-lg btn-secondary mx-3">Não</button>
+					              <a href="{% url 'DetalhoFuncionarioDesabilitarHab' data.id %}" class="btn btn-lg btn-primary">Sim</a>
+					            </div>
+					        </div>
+					      </div>
+					    </div>
+					</div>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

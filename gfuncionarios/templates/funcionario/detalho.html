@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		{% include 'funcionario/head_detalho_funcionario.html' %}
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="border-0 pt-0">
+						<h3 class=" align-items-start flex-column">
+							<!-- <span class="card-label fw-bolder fs-3 mb-1">Lista Utilizador</span> -->
+							<span class="text-muted mt-1 fw-bold fs-4">
+							{% if page == 'alterar_fun' %}
+							Alterar Dados - {{objects.nome}}
+							{% elif page == 'detalho_fun' %}
+							Detalho - {{objects.nome}}
+							{% elif page == 'detalho_funcionario_lista_funcao' %}
+							Lista Função - {{objects.nome}}
+							{% else %}
+							{{title}}
+							{% endif %}
+							</span>
+						</h3>
+						
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+						<!--begin::Table container-->
+						
+						
+						<!--end::Table container-->
+					
+				</div>
+				{% block content_funcionario_detail_tab %}
+				{% endblock %}
+				{% if page == 'detalho_fun' %}
+					<div class="bg-white p-2 d-flex justify-content-end">
+						<a href="{% url 'AtualizarFuncionario' objects.id %}" class="mx-2 btn btn-sm btn-light-primary btn-active-primary" >
+						<i class="bi bi-pencil-square"></i>Atualizar</a>
+						<a href="#" data-bs-toggle="modal" data-bs-target="#desabilitar_funcionario_{{objects.id}}" class="btn btn-sm btn-light-danger btn-active-danger" >
+						<i class="bi bi-trash"></i>Desabilitar</a>
+						<!-- {% if page == 'detalho_funcionario_lista_funcao' %}
+						<a href="{% url 'AtualizarFuncionario' objects.id %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+						<i class="bi bi-plus-square"></i>Inserir Novo Função</a>
+						{% endif %} -->
+					</div>
+				{% endif %}
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+<!-- modal -->
+<div class="modal fade" id="desabilitar_funcionario_{{objects.id}}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-12 text-center">
+            	<img src="{% static 'img/danger_alert_img.png' %}" height="150px">
+            	<h3>
+            	Você tem certeza para desabilitar esse dados?
+            	</h3>
+            	<p>você não pode reverter dados de {{objects.nome}}!</p>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+              <button data-bs-dismiss="modal" type="button" class="btn btn-lg btn-secondary mx-3">Não</button>
+              <a href="{% url 'DesabilitarFuncionario' objects.id %}" class="btn btn-lg btn-primary">Sim</a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div><!-- End Vertically centered Modal-->
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}

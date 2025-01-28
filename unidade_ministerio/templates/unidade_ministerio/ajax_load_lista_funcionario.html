@@ -1,0 +1,38 @@
+
+<h4 class="mt-4">Lista Funcionario - {{getData.nome}}</h4>
+<table id="dataTable" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+	<thead>
+		<tr class="fw-bolder text-muted">
+			<th class="min-w-10px">Nu.</th>
+			<th class="min-w-140px">Nome</th>
+			<th class="min-w-120px">Data Nascimento</th>
+			<th class="min-w-120px">ID Sigap</th>
+			<th class="min-w-120px">ID GRP</th>
+		</tr>
+	</thead>
+	<!--end::Table head-->
+	<!--begin::Table body-->
+	<tbody>
+		{% if objects %}
+		{% for obj in objects %}
+		<tr onclick="window.open('{% url 'DetailFuncionario' obj.funcionario.id %}', '_blank');" style="cursor: pointer;">
+			<td>
+					{{forloop.counter}}
+			</td>
+			<td data-title="Username">
+						{{ obj.funcionario.nome }}
+			</td>
+        	<td data-title="Group">{{ obj.funcionario.data_nascimento|date:"d-m-Y" }}</td>
+        	<td data-title="Email">{% if obj.funcionario.id_sigap %}{{ obj.funcionario.id_sigap }}{%else%}-{%endif%}</td>
+        	<td data-title="Email">{% if obj.funcionario.id_grp %}{{ obj.funcionario.id_grp }}{%else%}-{%endif%}</td>
+			
+		</tr>
+		{%endfor%}
+		{% else %}
+		<tr>
+			<td colspan="10" class="text-center">N&atilde;o tem dados de funcionarios!</td>
+		</tr>
+		{% endif %}
+	</tbody>
+	<!--end::Table body-->
+</table>

@@ -1,0 +1,71 @@
+{% load static %}
+
+<div class="card mt-2 mb-5">
+	<div class="card-header border-0 pt-5">
+		<div>Ficha Casuais</div>
+		<div>
+		{% if page == 'detalho_funcionario_lista_funcao' %}
+			<a href="{% url 'RegistaNovoFichaCasual' objects.id %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+			<i class="bi bi-plus-square"></i>Inserir Ficha Casuais</a>
+		{% endif %}
+		</div>
+	</div>
+	<div class="card-body">
+		
+		<div class="table-responsive">
+			<table class="table table-sm w-100">
+				<thead>
+					<tr class="text-left">
+						<th>Data In&iacute;cio</th>
+						<th>Data Fim</th>
+						<th>Regime</th>
+						<th>Categoria</th>
+						<th>Tipo Casuais</th>
+						<th>&Iacute;ndice</th>
+						<th class="text-center">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for data in objects4 %}
+					<tr class="text-left">
+						<td>{{data.data_inicio|date:"d-m-Y"}}</td>
+						<td>{{data.data_fim|date:"d-m-Y"}}</td>
+						<td>{{data.escalao.categoria.regime.regime}}</td>
+						<td>{{data.escalao.categoria.categoria}}</td>
+						<td>{{data.escalao.escalao}}</td>
+						<td>{{data.indice}}</td>
+						<td class="text-center">
+							<a href="{% url 'UpdateContratacao' objects.id data.id_contratacao %}" class="btn btn-sm btn-light-primary"><i class="bi bi-pencil-square"></i></a>
+							<a href="#" data-bs-toggle="modal" data-bs-target="#desabilitar_ficha_funcao_contratacao_{{data.id_contratacao}}" class="btn btn-sm btn-light-danger btn-active-danger" >
+							<i class="bi bi-trash"></i></a>
+						</td>
+					</tr>
+					
+					<div class="modal fade" id="desabilitar_ficha_funcao_contratacao_{{data.id_contratacao}}" tabindex="-1">
+					    <div class="modal-dialog modal-dialog-centered">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					        </div>
+					        <div class="modal-body">
+					            <div class="col-12 text-center">
+					            	<img src="{% static 'img/danger_alert_img.png' %}" height="150px">
+					            	<h3>
+					            	Você tem certeza para desabilitar esse dados?
+					            	</h3>
+					            	<p>você não pode reverter dados de {{data.data_inicio|date:"d-m-Y"}} - {{data.data_fim|date:"d-m-Y"}}!</p>
+					            </div>
+					            <div class="d-flex justify-content-center mt-5">
+					              <button data-bs-dismiss="modal" type="button" class="btn btn-lg btn-secondary mx-3">Não</button>
+					              <a href="{% url 'DesabilitarContratacao' objects.id data.id_contratacao %}" class="btn btn-lg btn-primary">Sim</a>
+					            </div>
+					        </div>
+					      </div>
+					    </div>
+					</div>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

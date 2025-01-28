@@ -1,0 +1,67 @@
+{% load static %}
+<script>
+    $(document).ready(function () {
+        $('#id_sigap_search').on('keyup', function () {
+            let query = $(this).val();
+            let pageTemplate = $('#page').val();
+            if (query.length > 2) {  // start searching after 3 characters
+                $.ajax({
+                    url: '{% url "BuscaFuncionario" %}',
+                    data: { 'id_sigap_search': query },
+                    dataType: 'json',
+                    success: function (data) {
+                        let results = data.results;
+                        let resultHtml = '';
+
+                        if (results.length > 0) {
+                            resultHtml += '<ul class="list-group">';
+                            results.forEach(function (funcionario) {
+                            	let detailUrl = pageTemplate.replace('FUNCIONARIO_ID_PLACEHOLDER', funcionario.id);
+                                resultHtml += '<li class="list-group-item" style="display: flex; align-items: center; justify-content: space-between;">';
+
+                                resultHtml += '<a href="' + detailUrl + '" target="_blank"style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: inherit;">';
+                                // Image section
+                                if (funcionario.dados_imajen) {
+                                    resultHtml += '<img src="data:image/png;base64,' + funcionario.dados_imajen + '" alt="' + funcionario.nome + '" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;">';
+                                }else{
+                                	resultHtml += '<img src="{% static 'img/pessoa_neutra.png' %}" alt="' + funcionario.nome + '" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;">';
+                                }
+                                
+                                // Main content section with two divs inside
+                                resultHtml += '<div style="flex: 1; display: flex; justify-content: space-between;">';
+                                
+                                // First inner div for main details
+                                resultHtml += '<div>';
+                                resultHtml += '<strong>' + funcionario.nome + '</strong> (' + funcionario.id_sigap + ')<br>';
+                                resultHtml += 'Sexo: ' + funcionario.sexo + '<br>';
+                                resultHtml += 'Data de Nascimento: ' + funcionario.data_nascimento;
+                                resultHtml += '</div>';
+                                
+                                // Second inner div for additional info
+                                resultHtml += '<div style="text-align: right; padding-left: 20px;">';
+                                resultHtml += '<small class="badge badge-secondary">'+ funcionario.tipo_funcionario +'</small>';
+                                resultHtml += '</div>';
+
+                                // Second inner div for additional info
+                                resultHtml += '<div style="text-align: right; padding-left: 20px;">';
+                                resultHtml += '<small></small>';
+                                resultHtml += '</div>';
+                                
+                                resultHtml += '</div>';  // Close main content section
+                                resultHtml += '</a>';
+                                resultHtml += '</li>';
+                            });
+                            resultHtml += '</ul>';
+                        } else {
+                            resultHtml = '<p class="text-muted">No results found.</p>';
+                        }
+
+                        $('#searchResults').html(resultHtml);
+                    }
+                });
+            } else {
+                $('#searchResults').html('');  // Clear results if the query is too short
+            }
+        });
+    });
+</script>

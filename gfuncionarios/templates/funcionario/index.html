@@ -1,0 +1,251 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h3 class="card-title align-items-start flex-column">
+							<!-- <span class="card-label fw-bolder fs-3 mb-1">Lista Utilizador</span> -->
+							<span class="text-muted mt-1 fw-bold fs-7">Filtrado : <span id="filteredCount"></span> Pessoas</span>
+							<span class="text-muted mt-1 fw-bold fs-7">Total Funcionario : <span id="totalCount"></span> Pessoas</span>
+						</h3>
+						<div>
+							<a href="{% url 'RegistaNovoFuncionario' %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+							<i class="bi bi-person-plus"></i>
+							<!--end::Svg Icon-->Registar Novo Funcionario</a>
+						</div>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="table-responsive">
+							<!--begin::Table-->
+							<table id="example" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+								<!--begin::Table head-->
+								<thead>
+									<tr>
+							            <th width="150px">
+							            	<select id="controlo_ativo" name="controlo_ativo" class="form-control" multiple>
+							            		<option value="">Seleciona Estado Ativo</option>
+							            		<option value="Ativo">Ativo</option>
+							            		<option value="Não Exercício">Não Exercício</option>
+							            		<option value="Saída Definitiva">Saída Definitiva</option>
+							            	</select>
+							            </th>
+							            <th><input class="form-control" type="text" id="nome_fun" name="nome_fun" placeholder="Nome do Funcionario"></th>
+							            <th>
+							            	<select id="sexo" name="sexo" class="form-control">
+							            		<option value="">Seleciona Sexo</option>
+							            		<option value="Masculino">Masculino</option>
+							            		<option value="Feminino">Feminino</option>
+							            	</select>
+							            </th>
+							            <th><input class="form-control" type="text" id="id_sigap" name="id_sigap" placeholder="ID Sigap"></th>
+							            <th><input class="form-control" type="text" id="id_grp" name="id_grp" placeholder="ID GRP"></th>
+							            <th></th>
+							            <th><input class="form-control" type="text" id="unidade" name="unidade" placeholder="Unidade Organica"></th>
+							            <th>
+							            	<select id="local_trabalho" name="local_trabalho" class="form-control">
+							            		<option value="">Local Trabalho</option>
+							            		{% for i in local_trabalho %}
+							            		<option value="{{i.municipio}}">{{i.municipio}}</option>
+							            		{% endfor %}
+							            	</select>
+							            </th>
+							            <th>
+							            	<select id="tipo_funcionario" name="tipo_funcionario" class="form-control">
+							            		<option value="">Quadro</option>
+							            		{% for i in tipo_funcionario %}
+							            		<option value="{{i}}">{{i}}</option>
+							            		{% endfor %}
+							            	</select>
+							            </th>
+							            <th><input type="text" placeholder="cargo" /></th>
+							        </tr>
+									<tr class="fw-bolder text-muted">
+										<th class="min-w-140px"  width="150px">Estado</th>
+										<th class="min-w-140px">Nome do Funcionario</th>
+										<th class="min-w-120px">Sexo</th>
+										<th class="min-w-120px">ID Sigap</th>
+										<th class="min-w-120px">ID GRP</th>
+										<th class="min-w-120px">Data de Nascimento</th>
+										<th class="min-w-100px text-center">Unidade</th>
+										<th class="min-w-100px text-center">Local Trabalho</th>
+										<th class="min-w-100px text-center">Quadro</th>
+										<th class="min-w-100px text-center">Cargo</th>
+										<th class="min-w-100px text-center">Idade</th>
+									</tr>
+								</thead>
+								<!--end::Table head-->
+								<!--begin::Table body-->
+								
+								<!--end::Table body-->
+							</table>
+							<!--end::Table-->
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+<link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'assets/datatables/js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/datatables/js/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	    $('#controlo_ativo').select2({
+	        placeholder: "Seleciona Estado Ativo",
+	        allowClear: true,
+	    });
+	});
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            processing: true,
+            serverSide: true,
+            
+            ajax: {
+	            url: '{% url "funcionarios_data" %}',
+	            data: function(d) {
+	                d.nome_fun = $('#nome_fun').val();
+	                d.id_sigap = $('#id_sigap').val();
+	                d.id_grp = $('#id_grp').val();
+	                // d.controlo_ativo = $('#controlo_ativo').val();
+	                d.controlo_ativo = $('#controlo_ativo').val();
+	                d.sexo = $('#sexo').val();
+	                d.unidade = $('#unidade').val();
+	                d.local_trabalho = $('#local_trabalho').val();
+	                d.tipo_funcionario = $('#tipo_funcionario').val();
+
+	                console.log("Selected values for controlo_ativo:", d.controlo_ativo);  // Log selected values
+	            },traditional: true
+	        },
+            columns: [
+	            {
+				    data: null,  // Use null since we're combining multiple fields
+				    render: function(data, type, row) {
+				        // Define badge for estado
+				        let estadoBadge;
+				        if (row.estado === 'Ativo') {
+				            estadoBadge = '<span class="badge badge-primary"><small>' + row.estado + '</small></span>';
+				        } else if (row.estado === 'Não Exercício') {
+				            estadoBadge = '<span class="badge badge-warning"><small>' + row.estado + '</small></span>';
+				        } else if (row.estado === 'Saída Definitiva') {
+				            estadoBadge = '<span class="badge badge-danger"><small>' + row.estado + '</small></span>';
+				        } else {
+				            estadoBadge = row.estado || '';  // Default text if none of the conditions match
+				        }
+
+				        // Define image for image_base64
+				        let imageHtml;
+				        if (row.image_base64) {
+				            imageHtml = '<img src="data:image/png;base64,' + row.image_base64 + '" alt="Employee Image" width="50" height="50">';
+				        } else {
+				            imageHtml = '<img src="{% static 'img/pessoa_neutra.png' %}" alt="image" width="50" height="50" border="1" class="border border-secondary" />';
+				        }
+
+				        // Combine badge and image
+				        return '<div class="d-flex flex-column align-items-center">'  + imageHtml+ estadoBadge + '</div>';
+				    }
+				},
+
+                { data: 'nome_do_funcionario' },
+                { data: 'sexo' },
+                { data: 'id_sigap' },
+                { data: 'id_grp' },
+                { data: 'data_nascimento' },
+                { data: 'unidade' },
+                { data: 'local_trabalho',className: 'text-center' },
+                { data: 'quadro' },
+                { data: 'cargo' },
+                { 	data: 'idade',
+                	className: 'text-center'
+                },
+            ],
+            order: [[1, 'asc']],
+            pageLength: 10 , // Adjust the number of rows per page as needed
+            // dom: '<<"top"rt<"bottom"lp><"clear">',
+            dom: '<<"top"rt><"bottom"p><"clear">',
+            initComplete: function() {
+	            this.api().columns().every(function() {
+	                var column = this;
+	                console.log("column"+column)
+	                $('input', column.header()).on('keyup change', function() {
+	                    column.search(this.value).draw();
+	                });
+	            });
+	        },
+            "rowCallback": function (row, data, index) {
+                // Add a click event to the row
+                $(row).on('click', function () {
+                    // Get the equipment ID from the data object (adjust the property name as needed)
+                    var dataID = data.id;  // Assuming your data has an 'id' property
+
+                    // Redirect to the detail page using the equipment ID
+                    window.location.href = "{% url 'DetailFuncionario' 0 %}".replace('0', dataID);
+                });
+            }
+        });
+        // Add event listener for search inputs
+        $('#nome_fun').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#id_sigap').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#id_grp').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#controlo_ativo').on('change', function () {
+	        table.draw();
+	    });
+	    $('#sexo').on('change', function () {
+	        table.draw();
+	    });
+	    $('#local_trabalho').on('change', function () {
+	        table.draw();
+	    });
+	    $('#tipo_funcionario').on('change', function () {
+	        table.draw();
+	    });
+	    $('#unidade').on('keyup', function () {
+	        table.draw();
+	    });
+
+	    $('#example').on('xhr.dt', function(e, settings, json, xhr) {
+            $('#filteredCount').text(json.recordsFiltered);  // Update the element with the filtered count
+        });
+        $('#example').on('xhr.dt', function(e, settings, json, xhr) {
+            $('#totalCount').text(json.allTotal);  // Update the element with the filtered count
+        });
+
+    });
+</script>
+
+
+{% endblock %}

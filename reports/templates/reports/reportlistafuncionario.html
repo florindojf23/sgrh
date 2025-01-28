@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h3 class="card-title align-items-start flex-column">
+							{{title}}
+						</h3>
+						
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="table-responsive">
+							<!--begin::Table-->
+							<table id="exportDataTable" class="table table-bordered table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+								<!--begin::Table head-->
+								<thead>
+									<tr class="fw-bolder text-muted">
+										<th class="min-w-140px">N&uacute;.</th>
+										<th class="min-w-140px">Estado</th>
+										<th class="min-w-140px">Nome do Funcionario</th>
+										<th class="min-w-120px">Sexo</th>
+										<th class="min-w-120px">ID Sigap</th>
+										<th class="min-w-120px">ID GRP</th>
+										<th class="min-w-120px">Data de Nascimento</th>
+										<th class="min-w-100px text-center">Unidade</th>
+										<th class="min-w-100px text-center">Local Trabalho</th>
+										<th class="min-w-100px text-center">Quadro</th>
+										<th class="min-w-100px text-center">Cargo</th>
+										<th class="min-w-100px text-center">Idade</th>
+									</tr>
+								</thead>
+								<!--end::Table head-->
+								<tbody>
+									{% for data in objects %}
+									<tr onclick="window.open('{% url 'DetailFuncionario' data.id %}', '_blank');" style="cursor: pointer;">
+										<td class="min-w-140px">{{forloop.counter}}</td>
+										<td class="min-w-140px">{{data.controlo_ativo}}</td>
+										<td class="min-w-140px">{{data.nome}}</td>
+										<td class="min-w-120px">{{data.sexo}}</td>
+										<td class="min-w-120px">{{data.id_sigap}}</td>
+										<td class="min-w-120px">{{data.id_grp}}</td>
+										<td class="min-w-120px">{{data.data_nascimento|date:"d-m-Y"}}</td>
+										<td class="min-w-100px text-center">{{data.unidade}}</td>
+										<td class="min-w-100px text-center">{{ data.local_trabalho|default_if_none:"" }}</td>
+										<td class="min-w-100px text-center">{{data.tipo_funcionario}}</td>
+										<td class="min-w-100px text-center">{{data.categoria_cargo}}</td>
+										<td class="min-w-100px text-center">{{data.idade|add:0}}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+								<!--begin::Table body-->
+								
+								<!--end::Table body-->
+							</table>
+							<!--end::Table-->
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+		{% include 'exports/exports_custom.html' %}
+{% endblock %}

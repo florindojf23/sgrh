@@ -1,0 +1,267 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				{% include 'habilitacao_ac/head_tab_hab.html' %}
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h3 class="card-title align-items-start flex-column">
+							<span class="card-label fw-bolder fs-3 mb-1">Dashboard Habilita&ccedil;&atilde;o Acad&eacute;mica</span>
+							
+						</h3>
+						<div>
+							<!-- <a href="{% url 'RegistaNovoHabFuncionario' %}" class="btn btn-sm btn-light-primary btn-active-primary" > -->
+							<!-- <i class="bi bi-person-plus"></i> -->
+							<!-- Registar Nova Habilita&ccedil;&atilde;o</a> -->
+						</div>
+					</div>
+					<div class="row mb-10">
+						{% for i in objects %}
+							<div class="col-sm-3 mt-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{i.total_habilitacao}}</h4>{{i.nivel_habilitacao}}<br>
+								</div>
+							</div>
+						{% endfor %}
+							
+						</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row input-group justify-content-center mb-10">
+
+							<div class="col-lg-8 col-sm-12">
+								<form>
+									<input class="form-control" id="id_sigap_search" type="text" name="id_sigap_search" placeholder="Buscar Funcionario com Nome ou ID" autofocus="">
+								</form>
+							</div>
+							<div class="col-sm-8">
+								<div class="table-responsive">
+								<div id="searchResults" class="mt-3"></div>
+								<input type="hidden" id="page" value="{% url 'DetalhoFuncionarioListaHab' 'FUNCIONARIO_ID_PLACEHOLDER' %}">
+								</div>
+
+							</div>
+							
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+
+			</div>
+			<!--end::Col-->
+		</div>
+		<div class="row gy-5 mt-4 g-xl-8">
+			<div class="col-xl-12">
+				
+				<div class="card">
+					<div class="card-header"><h4 class="mt-5">Monitorameto Habilitação</h4></div>
+					<div class="card-body">
+						<div class="d-flex justify-content-between mb-5">
+						<div class="col-xl-5">
+							<h3 class="card-title align-items-start flex-column">
+							<!-- <span class="card-label fw-bolder fs-3 mb-1">Lista Utilizador</span> -->
+							<span class="text-muted mt-1 fw-bold fs-7">Filtrado : <span id="filteredCount"></span><br>
+							<span class="text-muted mt-1 fw-bold fs-7">Habilitação Registado : <span id="totalCount"></span>
+						</h3>
+			            </div>
+						<div class="col-xl-3">
+							<select id="ano_hab" name="ano_hab" class="form-control">
+			            		<option value="">Seleciona Ano Habilitação</option>
+			            		{% for data in hab_years %}
+			            		<option value="{{data}}">{{data}}</option>
+			            		{% endfor %}
+			            	</select>
+			            </div>
+						<div class="col-xl-3">
+							<div class="d-flex justify-content-end mb-4">
+							    <button id="export_excel" class="btn btn-sm btn-primary"><i class="bi bi-download"></i> Exporta para Excel</button>
+							</div>
+			            </div>
+			            </div>
+						<div class="table-responsive">
+								<!--begin::Table-->
+								<table id="example" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+									<!--begin::Table head-->
+									<thead>
+										<tr>
+								            <th><input class="form-control" type="text" id="nome_fun" name="nome_fun" placeholder="Nome do Funcionario"></th>
+								            <th>
+								            	<select id="sexo" name="sexo" class="form-control">
+								            		<option value="">Seleciona Sexo</option>
+								            		<option value="Masculino">Masculino</option>
+								            		<option value="Feminino">Feminino</option>
+								            	</select>
+								            </th>
+								            <th><input class="form-control" type="text" id="id_sigap" name="id_sigap" placeholder="ID Sigap"></th>
+								            <th></th>
+								            <th></th>
+								            <th>
+								            	<select id="nivel_habilitacao" name="nivel_habilitacao" class="form-control">
+								            		<option value="">Nivel Habilitação</option>
+								            		<option value="Ainda Não Informado">Ainda Não Informado</option>
+								            		{% for i in objects_nivel_hab %}
+								            		<option value="{{i.nivel_habilitacao}}">{{i.nivel_habilitacao}}</option>
+								            		{% endfor %}
+								            	</select>
+								            </th>
+								            <th><input class="form-control" type="text" id="curso" name="curso" placeholder="Curso"></th>
+								            <th><input class="form-control" type="text" id="entidade" name="entidade" placeholder="Entidade"></th>
+								        </tr>
+										<tr class="fw-bolder text-muted">
+											<th class="min-w-140px">Nome do Funcionario</th>
+											<th class="min-w-120px">Sexo</th>
+											<th class="min-w-120px">ID Sigap</th>
+											<th class="min-w-120px">Data inicio habilitação</th>
+											<th class="min-w-120px">Data fim habilitação</th>
+											<th class="min-w-100px text-center">Nivel Habilitação</th>
+											<th class="min-w-100px text-center">Curso</th>
+											<th class="min-w-100px text-center">Entidade</th>
+										</tr>
+									</thead>
+									<!--end::Table head-->
+									<!--begin::Table body-->
+									
+									<!--end::Table body-->
+								</table>
+								<!--end::Table-->
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+{% include 'ajax/ajax_busca_funcionario.html' %}
+<link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/datatables/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'assets/datatables/js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/datatables/js/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            processing: true,
+            serverSide: true,
+            
+            ajax: {
+	            url: '{% url "monitor_habilitacao_data" %}',
+	            data: function(d) {
+	                d.ano_hab = $('#ano_hab').val();
+	                d.nome_fun = $('#nome_fun').val();
+	                d.id_sigap = $('#id_sigap').val();
+	                d.sexo = $('#sexo').val();
+	                d.nivel_habilitacao = $('#nivel_habilitacao').val();
+	                d.curso = $('#curso').val();
+	                d.entidade = $('#entidade').val();
+
+	            },traditional: true
+	        },
+            columns: [
+                { data: 'nome_do_funcionario' },
+                { data: 'sexo' },
+                { data: 'id_sigap' },
+                { data: 'data_inicio_habilitacao' },
+                { data: 'data_fim_habilitacao' },
+                { data: 'nivel_habilitacao',className: 'text-center' },
+                { data: 'curso' },
+                { data: 'entidade' },
+            ],
+            order: [[1, 'asc']],
+            pageLength: 10 , // Adjust the number of rows per page as needed
+            // dom: '<<"top"rt<"bottom"lp><"clear">',
+            dom: '<<"top"rt><"bottom"p><"clear">',
+            initComplete: function() {
+	            this.api().columns().every(function() {
+	                var column = this;
+	                console.log("column"+column)
+	                $('input', column.header()).on('keyup change', function() {
+	                    column.search(this.value).draw();
+	                });
+	            });
+	        },
+            "rowCallback": function (row, data, index) {
+                // Add a click event to the row
+                $(row).on('click', function () {
+                    // Get the equipment ID from the data object (adjust the property name as needed)
+                    var dataID = data.id;  // Assuming your data has an 'id' property
+
+                    // Redirect to the detail page using the equipment ID
+                    window.location.href = "{% url 'DetalhoFuncionarioListaHab' 0 %}".replace('0', dataID);
+                });
+            }
+        });
+        // Add event listener for search inputs
+        $('#nome_fun').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#id_sigap').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#sexo').on('change', function () {
+	        table.draw();
+	    });
+	    $('#ano_hab').on('change', function () {
+	        table.draw();
+	    });
+	    $('#nivel_habilitacao').on('change', function () {
+	        table.draw();
+	    });
+	    $('#curso').on('keyup', function () {
+	        table.draw();
+	    });
+	    $('#entidade').on('keyup', function () {
+	        table.draw();
+	    });
+
+	    $('#example').on('xhr.dt', function(e, settings, json, xhr) {
+            $('#filteredCount').text(json.recordsFiltered);  // Update the element with the filtered count
+        });
+        $('#example').on('xhr.dt', function(e, settings, json, xhr) {
+            $('#totalCount').text(json.allTotal);  // Update the element with the filtered count
+        });
+
+
+        $('#export_excel').on('click', function () {
+		    // Get the current filters
+		    const filters = {
+		        ano_hab: $('#ano_hab').val(),
+		        nome_fun: $('#nome_fun').val(),
+		        id_sigap: $('#id_sigap').val(),
+		        sexo: $('#sexo').val(),
+		        nivel_habilitacao: $('#nivel_habilitacao').val(),
+		        curso: $('#curso').val(),
+		        entidade: $('#entidade').val(),
+		    };
+
+		    // Construct the export URL with query parameters
+		    const exportUrl = new URL("{% url 'export_monitor_habilitacao_to_excel' %}", window.location.origin);
+		    Object.keys(filters).forEach(key => {
+		        if (filters[key]) {
+		            exportUrl.searchParams.append(key, filters[key]);
+		        }
+		    });
+
+		    // Redirect to the export URL
+		    window.location.href = exportUrl.href;
+		});
+
+
+    });
+</script>
+{% endblock %}

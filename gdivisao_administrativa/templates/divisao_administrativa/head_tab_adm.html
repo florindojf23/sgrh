@@ -1,0 +1,81 @@
+<div class="card mb-4 px-5">
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder">
+            <!--begin::Nav item-->
+            <li class="nav-item mt-2">
+                {% if page == 'municipio' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_mun}}" href="{% url 'lista-divisao-administrativa' %}">Dados Divis&atilde;o Administrativa</a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_mun}}" href="{% url 'lista-divisao-administrativa' %}">Dados Divis&atilde;o Administrativa</a>
+                {% endif %}
+            </li>
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+            <li class="nav-item mt-2">
+                {% if page == 'nivel_hab' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_nivel_hab}}" href="{% url 'nivelHabilitacao' %}">Nivel Habilita&ccedil;&atilde;o
+                </a>
+                {% elif page == 'form_nivel_hab'%}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'nivelHabilitacao' %}">Inserir Nivel Habilita&ccedil;&atilde;o
+                </a>
+                {% elif page == 'form_nivel_hab' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'nivelHabilitacao' %}">Alterar Nivel Habilita&ccedil;&atilde;o
+                </a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_dir_gerais_nac}}" href="{% url 'nivelHabilitacao' %}">Municipio 
+                </a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item mt-2">
+                {% if page == 'entidade_hab' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_entidade_hab}}" href="{% url 'EntidadeHabilitacao' %}">Entidade
+                </a>
+                {% elif page == 'form_entidade_hab'%}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'EntidadeHabilitacaoAdd' %}">Inserir Entidade
+                </a>
+                {% elif page == 'form_entidade_hab'  %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'EntidadeHabilitacaoAltera' %}">Alterar Entidade
+                </a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_dir_gerais_nac}}" href="{% url 'EntidadeHabilitacao' %}">Posto Administrativo 
+                </a>
+                {% endif %}
+            </li>
+            <li class="nav-item mt-2">
+                {% if page == 'curso_hab' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_curso_hab}}" href="{% url 'CursoHabilitacao' %}">Curso
+                </a>
+                {% elif page == 'form_curso_hab'%}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'CursoHabilitacaoAdd' %}">{{legend}}
+                </a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_curso_hab}}" href="{% url 'CursoHabilitacao' %}">Suco 
+                </a>
+                {% endif %}
+            </li>
+            <li class="nav-item mt-2">
+                {% if page == 'curso_hab' %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_curso_hab}}" href="{% url 'CursoHabilitacao' %}">Curso
+                </a>
+                {% elif page == 'form_curso_hab'%}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="{% url 'CursoHabilitacaoAdd' %}">{{legend}}
+                </a>
+                {% else %}
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_curso_hab}}" href="{% url 'CursoHabilitacao' %}">Aldeia 
+                </a>
+                {% endif %}
+            </li>
+            
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+            
+
+            <!--end::Nav item-->
+            <!--begin::Nav item-->
+           <!--  <li class="nav-item mt-2">
+                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{active_loginhistory}}" href="{% url 'user-login-history' %}"></a>
+            </li> -->
+            <!--end::Nav item-->
+            
+        </ul>
+</div>

@@ -1,0 +1,38 @@
+{% if page == 'load_posto' %}
+	<option value="">-----Escolha Posto----</option>
+	{% for obj in posts %}
+	<option value="{{ obj.id_posto }}">{{ obj.posto }}</option>
+	{% endfor %}
+{% elif page == 'load_suco' %}
+	<option value="">-----Escolha Suco----</option>
+	{% for obj in villages %}
+	<option value="{{ obj.id_suco }}">{{ obj.suco }}</option>
+	{% endfor %}
+{% elif page == 'load_aldeias' %}
+	<option value="">-----Escolha Aldeia----</option>
+	{% for obj in aldeias %}
+	<option value="{{ obj.id_aldeia }}">{{ obj.aldeia }}</option>
+	{% endfor %}
+{% elif page == 'load_dir_nac' %}
+
+	<option value="">-----Escolha Dire&ccedil;&atilde;o Nacional----</option>
+	{% for obj in dir_nac %}
+	<option value="{{ obj.id }}">{{ obj.nome }}</option>
+	{% endfor %}
+
+{% elif page == 'load_dep' %}
+	<option value="">-----Escolha Departamento----</option>
+	{% for obj in departamento %}
+	<option value="{{ obj.id }}">{{ obj.nome }}</option>
+	{% endfor %}
+{% elif page == 'load_sec' %}
+	<option value="">-----Escolha Sec&ccedil;&atilde;o----</option>
+	{% for obj in seccao %}
+	<option value="{{ obj.id }}">{{ obj.nome }}</option>
+	{% endfor %}
+{% elif page == 'load_escola_dg' %}
+	<option value="">-----Escolha Escola----</option>
+	{% for obj in escola %}
+	<option value="{{ obj.id }}">{{ obj.nome }}</option>
+	{% endfor %}
+{% endif %}

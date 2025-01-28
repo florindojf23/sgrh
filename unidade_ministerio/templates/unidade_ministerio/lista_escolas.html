@@ -1,0 +1,93 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				{% include 'unidade_ministerio/head_tab_unidade_organica.html' %}
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h4>Dados Escolas em Torrit&oacute;rio</h4>
+						<div>
+							<a href="{% url 'RegistaNovoEscola' %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+							<i class="bi bi-plus-square"></i>
+							<!--end::Svg Icon-->Registar Novo Dados</a>
+						</div>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="table-responsive">
+							<!--begin::Table-->
+							<table id="example" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+								<!--begin::Table head-->
+								<thead>
+									<tr class="fw-bolder text-muted">
+										<th class="min-w-10px">Nu.</th>
+										<th class="min-w-140px">Nome Escola</th>
+										<th class="min-w-120px">Data Inicio</th>
+										<th class="min-w-120px">Data Fim</th>
+										<th class="min-w-140px">Aldeia</th>
+										<th class="min-w-140px">Suco</th>
+										<th class="min-w-140px">Posto</th>
+										<th class="min-w-140px">Municipui</th>
+										<th class="min-w-120px">Controlo Ativo</th>
+										<th class="min-w-100px text-center">Ac&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<!--end::Table head-->
+								<!--begin::Table body-->
+								<tbody>
+									{% for obj in objects %}
+									<tr onclick="window.location='{% url 'DetailFuncionario' obj.id %}';" style="cursor: pointer;">
+										<td>
+												{{forloop.counter}}
+										</td>
+										<td data-title="Username">{{ obj.nome }}</td>
+										<td data-title="Username">{{ obj.data_inicio|date:"d-m-Y" }}</td>
+                                    	<td data-title="Email">{% if obj.data_fim %}{{ obj.data_fim|date:"d-m-Y" }}{%else%}-{%endif%}</td>
+										<td data-title="Username">{{ obj.aldeia }}</td>
+										<td data-title="Username">{{ obj.suco }}</td>
+										<td data-title="Username">{{ obj.posto }}</td>
+										<td data-title="Username">{{ obj.municipio }}</td>
+                                    	<td>{{obj.controlo_ativo}}</td>
+										<td class="text-center">
+											<a href="{% url 'UpdateEscola' obj.id %}" class="btn btn-sm btn-light-success btn-active-success"><i class="bi bi-pencil-square"></i></a>
+
+										</td>
+									</tr>
+									{%endfor%}
+								</tbody>
+								<!--end::Table body-->
+							</table>
+							<!--end::Table-->
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+		{% include 'exports/exports_custom1.html' %}
+{% endblock %}

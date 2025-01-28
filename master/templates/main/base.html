@@ -1,0 +1,158 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		<title>SGRH - {{title}}</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free." />
+		<meta name="keywords" content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="article" />
+		<!-- <meta property="og:url" content="https://keenthemes.com/metronic" /> -->
+		<meta property="og:site_name" content="Keenthemes | Metronic" />
+		<!-- <link rel="canonical" href="https://preview.keenthemes.com/metronic8" /> -->
+		<link rel="shortcut icon" href="{% static 'img/me.png' %}" />
+		<!--begin::Fonts-->
+		<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" /> -->
+		<!--end::Fonts-->
+		<!--begin::Page Vendor Stylesheets(used by this page)-->
+		<!--end::Page Vendor Stylesheets-->
+		<!--begin::Global Stylesheets Bundle(used by all pages)-->
+		<link href="{% static 'assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Global Stylesheets Bundle-->
+		<style type="text/css">
+			
+		{% block headStyle %}
+		.custom-select {
+		    /* Add your custom CSS styles here */
+		    /*border: 1px solid #ccc;*/
+		    /*border-radius: 5px;*/
+		    /*padding: 5px 30px 5px 10px;*/
+		    background-color: #fff;
+		    cursor: pointer;
+		}
+		{% endblock %}
+		</style>
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+		<!--begin::Main-->
+		<!--begin::Root-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="page d-flex flex-row flex-column-fluid">
+				<!--begin::Aside-->
+				
+					<!--end::Brand-->
+					<!--begin::Aside menu-->
+					{% if user.is_authenticated %}
+						{% if user.groups.all.0.name == 'admin' %}
+						{% include 'main/sidebarAdmin.html' %}
+						{% elif user.groups.all.0.name == 'RH Nacional' %}
+						{% include 'main/sidebarRHNacional.html' %}
+						{% elif user.groups.all.0.name == 'RH Municipio' %}
+						{% include 'main/sidebarAdmin.html' %}
+						{% endif %}
+					{% endif %}
+					<!--end::Aside menu-->
+					<!--begin::Footer-->
+					
+					<!--end::Footer-->
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+					{% include 'main/header.html' %}
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						
+							<!--begin::Container-->
+							<div class="toolbar" id="kt_toolbar">
+								<div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+									<!--begin::Page title-->
+									<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+										<!-- <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">{{title}}</h1> -->
+										<span class="h-20px border-gray-300 border-start mx-4"></span>
+										{% if title != 'HOME' %}
+										<ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+											<li class="breadcrumb-item text-muted">
+												<a href="{% url 'home' %}" class="text-muted text-hover-primary">Home</a>
+											</li>
+											<li class="breadcrumb-item">
+												<span class="bullet bg-gray-300 w-5px h-2px"></span>
+											</li>
+											{% if link_antes %}
+									            {% for i in link_antes %}
+									              <li class="breadcrumb-item"><a href="
+									                {% if i.link_param %}
+									                    {% url i.link_name i.link_param %}
+									                {% else %}
+									                    {% url i.link_name %}
+									                {% endif %}
+									                ">{{i.link_text}}</a></li>
+									               <li class="breadcrumb-item">
+												<span class="bullet bg-gray-300 w-5px h-2px"></span>
+											</li>
+									            {%endfor%}
+									          {% endif %}
+											<li class="breadcrumb-item text-dark">{{title}}</li>
+										</ul>
+										{%endif%}
+									</div>
+									<!--end::Actions-->
+								</div>
+							</div>
+							<div class="post container-xxl">
+							{% if messages %}
+							    {% for message in messages %} 
+							        <div class="alert alert-{{ message.tags }} alert-dismissable">
+							        	<div class="d-flex justify-content-between">
+							          		{{message}}
+							          		<button type="button" class="close btn btn-sm" data-dismiss="alert" aria-hidden="true"><span class="bi bi-x-square"></span></button>
+							        	</div>
+							        </div>
+							    {% endfor %}
+							{% endif %}
+							</div>
+							{% block content %}
+							{% endblock %}
+							<!--end::Container-->
+					</div>
+					<!--end::Content-->
+					<!--begin::Footer-->
+					{% include 'main/footer.html' %}
+					<!--end::Footer-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+		</div>
+		<!--end::Root-->
+		<!--begin::Scrolltop-->
+		<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+			<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+			<span class="svg-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+					<rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
+					<path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
+				</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</div>
+		<!--end::Scrolltop-->
+		<!--begin::Modals-->
+		
+		{% block modal %}
+		{% endblock %}
+		<!--end::Modals-->
+		<!--begin::Javascript-->
+		{% include 'main/script.html' %}
+		{% block script %}
+		{% endblock %}
+		
+		<!--end::Javascript-->
+	</body>
+	<!--end::Body-->
+</html>

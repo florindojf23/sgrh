@@ -1,0 +1,85 @@
+{% extends 'funcionario/detalho.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_funcionario_detail_tab %}
+
+<div class="card mt-2 mb-5">
+	<div class="card-header border-0 pt-5">
+		<div>Ficha Saída</div>
+		<div>
+		{% if page == 'detalho_funcionario_lista_saida' %}
+			<a href="{% url 'DetalhoFuncionarioRegistarFSaida' objects.id %}" class="btn btn-sm btn-light-primary btn-active-primary" >
+			<i class="bi bi-plus-square"></i>Inserir Ficha Saída</a>
+		{% endif %}
+		</div>
+	</div>
+	<div class="card-body">
+		
+		<div class="table-responsive">
+			<table class="table table-sm w-100">
+				<thead>
+					<tr class="text-left">
+						<!-- <th>Data In&iacute;cio</th> -->
+						<th>Data Saída</th>
+						<th>Motivo Saída</th>
+						<th class="text-center">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for data in objects1 %}
+					<tr class="text-left">
+						<td>{% if data.data_saida %}{{data.data_saida|date:"d-m-Y"}}{% else %}--{%endif%}</td>
+						<td>{{data.motivo_saida.motivo}}</td>
+						
+						<td class="text-center" style="width: 20%">
+							<a href="{% url 'DetalhoFuncionarioAlterarFSaida' objects.id data.id_saida %}" class="btn btn-sm btn-light-primary"><i class="bi bi-pencil-square"></i></a>
+							<a href="#" data-bs-toggle="modal" data-bs-target="#desabilitar_ficha_saida{{data.id_saida}}" class="btn btn-sm btn-light-danger btn-active-danger" >
+							<i class="bi bi-trash"></i></a>
+						</td>
+					</tr>
+					
+					<div class="modal fade" id="desabilitar_ficha_saida{{data.id_saida}}" tabindex="-1">
+					    <div class="modal-dialog modal-dialog-centered">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					        </div>
+					        <div class="modal-body">
+					            <div class="col-12 text-center">
+					            	<img src="{% static 'img/danger_alert_img.png' %}" height="150px">
+					            	<h3>
+					            	Você tem certeza para desabilitar esse dados?
+					            	</h3>
+					            	<p>você não pode reverter dados de {{data.motivo_saida.motivo}} do {{objects.nome}}!</p>
+					            </div>
+					            <div class="d-flex justify-content-center mt-5">
+					              <button data-bs-dismiss="modal" type="button" class="btn btn-lg btn-secondary mx-3">Não</button>
+					              <a href="{% url 'DesabilitarFSaida' objects.id data.id_saida %}" class="btn btn-lg btn-primary">Sim</a>
+					            </div>
+					        </div>
+					      </div>
+					    </div>
+					</div>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+					
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+						<div class="post d-flex flex-column-fluid" id="kt_post">
+							<div id="kt_content_container" class="container-xxl">
+							<!--begin::Container-->
+								<!--begin::Navbar-->
+								{% include "account/tab.html" %}
+								<!--end::Navbar-->
+								<!--begin::details View-->
+								<div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
+									<!--begin::Card header-->
+									<div class="card-header cursor-pointer">
+										<!--begin::Card title-->
+										<div class="card-title m-0">
+											<h3 class="fw-bolder m-0">Account Detail Settings</h3>
+										</div>
+										<!--end::Card title-->
+										<!--begin::Action-->
+										<!--end::Action-->
+									</div>
+									<!--begin::Card header-->
+									<!--begin::Card body-->
+									<div class="card-body p-9">
+										{% csrf_token %}
+                							{% crispy u_form %}
+										
+									</div>
+									<!--end::Card body-->
+								</div>
+								<!--end::details View-->
+								
+							</div>
+							<!--end::Container-->
+						</div>
+						<!--end::Post-->
+{% endblock %}

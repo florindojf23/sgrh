@@ -1,0 +1,152 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h4>Dashboard Gest&atilde;o Coloca&ccedil;&atilde;o</h4>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row input-group justify-content-center mb-10">
+
+							<div class="col-sm-8">
+								<form>
+									<input class="form-control" id="id_sigap_search" type="text" name="id_sigap_search" placeholder="Buscar Funcionario com Nome ou ID" autofocus="">
+								</form>
+							</div>
+							<div class="col-sm-8">
+								<div class="table-responsive">
+								<div id="searchResults" class="mt-3"></div>
+								</div>
+
+							</div>
+						</div>
+
+						<!-- <div class="row mb-10">
+							<div class="col-sm-3 mt-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{permanente|intcomma}}</h4>Funcion&aacute;rio Permanente<br>
+								</div>
+							</div>
+							<div class="col-sm-3 mt-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{aap|intcomma}}</h4> Funcion&aacute;rio AAP
+								</div>
+							</div>
+							<div class="col-sm-3 my-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{casuais|intcomma}}</h4> Funcion&aacute;rio Casuais
+								</div>
+							</div>
+							{% if nulo %}
+							<div class="col-sm-3 my-3">
+								<div class="border border-dark border-dashed py-3 rounded text-center">
+								<h4>{{nulo|intcomma}}</h4> Funcion&aacute;rio Casuais
+								</div>
+							</div>
+							{% endif %}
+						</div> -->
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script src="{% static 'assets/js/chart.min.js' %}"></script>
+<script src="{% static 'assets/js/chart.dataTables.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#id_sigap_search').on('keyup', function () {
+            let query = $(this).val();
+            if (query.length > 2) {  // start searching after 3 characters
+                $.ajax({
+                    url: '{% url "BuscaFuncionario" %}',
+                    data: { 'id_sigap_search': query },
+                    dataType: 'json',
+                    success: function (data) {
+                        let results = data.results;
+                        let resultHtml = '';
+
+                        if (results.length > 0) {
+                            resultHtml += '<ul class="list-group">';
+                            results.forEach(function (funcionario) {
+                            	let detailUrl = '{% url "DetalhoFuncionarioListaColocacao" "FUNCIONARIO_ID_PLACEHOLDER" %}'.replace('FUNCIONARIO_ID_PLACEHOLDER', funcionario.id);
+                                resultHtml += '<li class="list-group-item" style="display: flex; align-items: center; justify-content: space-between;">';
+
+                                resultHtml += '<a href="' + detailUrl + '" target="_blank"style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: inherit;">';
+                                // Image section
+                                if (funcionario.dados_imajen) {
+                                    resultHtml += '<img src="data:image/png;base64,' + funcionario.dados_imajen + '" alt="' + funcionario.nome + '" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;">';
+                                }else{
+                                	resultHtml += '<img src="{% static 'img/pessoa_neutra.png' %}" alt="' + funcionario.nome + '" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;">';
+                                }
+                                
+                                // Main content section with two divs inside
+                                resultHtml += '<div style="flex: 1; display: flex; justify-content: space-between;">';
+                                
+                                // First inner div for main details
+                                resultHtml += '<div>';
+                                resultHtml += '<strong>' + funcionario.nome + '</strong> (' + funcionario.id_sigap + ')<br>';
+                                resultHtml += 'Sexo: ' + funcionario.sexo + '<br>';
+                                resultHtml += 'Data de Nascimento: ' + funcionario.data_nascimento;
+                                resultHtml += '</div>';
+                                
+                                // Second inner div for additional info
+                                resultHtml += '<div style="text-align: right; padding-left: 20px;">';
+                                resultHtml += '<small class="badge badge-secondary">'+ funcionario.unidade +'</small>';
+                                resultHtml += '</div>';
+
+                                // Second inner div for additional info
+                                resultHtml += '<div style="text-align: right; padding-left: 20px;">';
+                                resultHtml += '<small></small>';
+                                resultHtml += '</div>';
+                                
+                                resultHtml += '</div>';  // Close main content section
+                                resultHtml += '</a>';
+                                resultHtml += '</li>';
+                            });
+                            resultHtml += '</ul>';
+                        } else {
+                            resultHtml = '<p class="text-muted">No results found.</p>';
+                        }
+
+                        $('#searchResults').html(resultHtml);
+                    }
+                });
+            } else {
+                $('#searchResults').html('');  // Clear results if the query is too short
+            }
+        });
+    });
+</script>
+
+
+		{% include 'exports/exports_custom1.html' %}
+{% endblock %}

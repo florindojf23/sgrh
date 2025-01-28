@@ -1,0 +1,211 @@
+{% extends 'funcionario/detalho.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_funcionario_detail_tab %}
+
+<div class="card">
+<div class="card-body">
+	
+						{% if form %}
+						{% csrf_token %}
+						    {% crispy form %}
+						{% else %}
+						    <p>Form object is None or not available.</p>
+						{% endif %}
+
+</div>
+</div>
+					
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+{% if page == 'form_funcao_fun' %}
+
+<script>
+document.getElementById("tipo-alteracao-ficha-select").addEventListener("change", function() {
+    const regimeId = this.value;
+    const id_fun = '{{objects.id}}';
+    console.log("regimeId:"+regimeId);
+    console.log("id_fun:"+id_fun);
+    const relacaoJuridicaEmpregoField = document.getElementById("relacao-juridica-select");
+    if (regimeId === 'dfbbdad5-90d7-4507-aac1-7085ea558216') {
+        // Hide the relacao_juridica_emprego input
+        relacaoJuridicaEmpregoField.disabled = true;
+        // relacaoJuridicaEmpregoField.style.display = "none";
+    } else {
+        // Show the relacao_juridica_emprego input
+        relacaoJuridicaEmpregoField.disabled = false;
+        // relacaoJuridicaEmpregoField.style.display = "block";
+    }
+    // if (regimeId == 'dfbbdad5-90d7-4507-aac1-7085ea558216') {
+
+    // fetch(`/funcao/ajax/load-form-progrssao/?id_tipo_alteracao_ficha=${regimeId}&id_fun=${id_fun}`)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const relacao_juridicaSelect = document.getElementById("relacao-juridica-select");
+    //         // relacao_juridicaSelect.innerHTML = '<option value="">Select relacao_juridica</option>';
+    //         data.forEach(relacao_juridica => {
+    //             relacao_juridicaSelect.innerHTML += `<option value="${relacao_juridica.id_relacao_juridica_emprego}">${relacao_juridica.relacao_juridica_emprego}</option>`;
+    //         });
+    //     });
+    // }
+});
+
+document.getElementById("regime-select").addEventListener("change", function() {
+    const regimeId = this.value;
+    fetch(`/funcao/ajax/load-categorias/?regime_id=${regimeId}`)
+        .then(response => response.json())
+        .then(data => {
+            const categoriaSelect = document.getElementById("categoria-select");
+            categoriaSelect.innerHTML = '<option value="">Select Categoria</option>';
+            data.forEach(categoria => {
+                categoriaSelect.innerHTML += `<option value="${categoria.id_categoria}">${categoria.categoria}</option>`;
+            });
+        });
+});
+
+document.getElementById("categoria-select").addEventListener("change", function() {
+    const categoriaId = this.value;
+    fetch(`/funcao/ajax/load-escalaos/?categoria_id=${categoriaId}`)
+        .then(response => response.json())
+        .then(data => {
+            const escalaoSelect = document.getElementById("escalao-select");
+            escalaoSelect.innerHTML = '<option value="">Select Escalao</option>';
+            data.forEach(escalao => {
+                escalaoSelect.innerHTML += `<option value="${escalao.id_escalao}">${escalao.escalao}</option>`;
+            });
+        });
+});
+
+document.getElementById("escalao-select").addEventListener("change", function() {
+    const escalaoId = this.value;
+    fetch(`/funcao/ajax/load-indices/?escalao_id=${escalaoId}`)
+        .then(response => response.json())
+        .then(data => {
+            const indiceSelect = document.getElementById("indice-select");
+            indiceSelect.innerHTML = '<option value="">Select Indice</option>';
+            data.forEach(indice => {
+                indiceSelect.innerHTML += `<option value="${indice.id_indice}">${indice.indice}</option>`;
+            });
+        });
+});
+</script>
+
+
+{% endif %}
+
+{% if page == 'form_funcao_fun_casual' %}
+<script type="text/javascript">
+    document.getElementById("regime-select").addEventListener("change", function() {
+    const regimeId = this.value;
+    fetch(`/funcao/ajax/load-categorias/?regime_id=${regimeId}`)
+        .then(response => response.json())
+        .then(data => {
+            const categoriaSelect = document.getElementById("categoria-select");
+            categoriaSelect.innerHTML = '<option value="">Select Categoria</option>';
+            data.forEach(categoria => {
+                categoriaSelect.innerHTML += `<option value="${categoria.id_categoria}">${categoria.categoria}</option>`;
+            });
+        });
+});
+
+document.getElementById("categoria-select").addEventListener("change", function() {
+    const categoriaId = this.value;
+    fetch(`/funcao/ajax/load-escalaos/?categoria_id=${categoriaId}`)
+        .then(response => response.json())
+        .then(data => {
+            const escalaoSelect = document.getElementById("escalao-select");
+            escalaoSelect.innerHTML = '<option value="">Select Escalao</option>';
+            data.forEach(escalao => {
+                escalaoSelect.innerHTML += `<option value="${escalao.id_escalao}">${escalao.escalao}</option>`;
+            });
+        });
+});
+
+document.getElementById("escalao-select").addEventListener("change", function() {
+    const escalaoId = this.value;
+    fetch(`/funcao/ajax/load-indices/?escalao_id=${escalaoId}`)
+        .then(response => response.json())
+        .then(data => {
+            const indiceSelect = document.getElementById("indice-select");
+            indiceSelect.innerHTML = '<option value="">Select Indice</option>';
+            data.forEach(indice => {
+                indiceSelect.innerHTML += `<option value="${indice.id_indice}">${indice.indice}</option>`;
+            });
+        });
+});
+</script>
+{% endif %}
+
+{% if page == 'form_colocacao_fun' %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script>
+	$("#id_dg").change(function () {
+        var dgID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_dir_nac' %}",
+            data: {
+                'dg': dgID
+            },
+            success: function (data) {
+                $("#id_dn").html(data);
+            }
+        });
+    });
+
+	$("#id_dg").change(function () {
+        var dgID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_escola_dg' %}",
+            data: {
+                'dg': dgID
+            },
+            success: function (data) {
+                $("#id_escola").html(data);
+            }
+        });
+    });
+
+    $("#id_dn").change(function () {
+        var dnID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_departamento' %}",
+            data: {
+                'id': dnID
+            },
+            success: function (data) {
+                $("#id_dep").html(data);
+            }
+        });
+    });
+    $("#id_dep").change(function () {
+        var depID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({ 
+            url: "{% url 'ajax_load_seccao' %}",
+            data: {
+                'id': depID
+            },
+            success: function (data) {
+                $("#id_sec").html(data);
+            }
+        });
+    });
+</script>
+
+
+{% endif %}
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}

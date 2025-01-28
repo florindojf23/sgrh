@@ -1,0 +1,273 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			{% include 'unidade_ministerio/head_tab_unidade_organica.html' %}
+				<div class="card p-5">
+					<div class="card-header"><h2>Formulario {{title}}</h2></div>
+					<div class="card-body p-9">
+						{% if form %}
+						{% csrf_token %}
+						    {% crispy form %}
+						{% else %}
+						    <p>Form object is None or not available.</p>
+						{% endif %}
+
+					</div>
+					
+				</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+
+{% if page == 'form_escola' %}
+
+ <script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+
+<script type="text/javascript">
+    // Load administrative posts based on selected municipality
+    $("#id_municipio").change(function () {
+        var municipalityId = $(this).val();
+        console.log("municipality:" + municipalityId);
+        $.ajax({
+            url: "{% url 'ajax_load_posts' %}",
+            data: {
+                'municipality': municipalityId
+            },
+            success: function (data) {
+                $("#id_posto").html(data);
+            }
+        });
+    });
+
+    // Load villages based on selected administrative post
+    $("#id_posto").change(function () {
+        var postId = $(this).val();
+        console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_villages' %}",
+            data: {
+                'post': postId
+            },
+            success: function (data) {
+                $("#id_suco").html(data);
+            }
+        });
+    });
+
+    $("#id_suco").change(function () {
+        var sucoID = $(this).val();
+        console.log("sucoID:" + sucoID);
+        $.ajax({
+            url: "{% url 'ajax_load_aldeias' %}",
+            data: {
+                'suco': sucoID
+            },
+            success: function (data) {
+                $("#id_aldeia").html(data);
+            }
+        });
+    });
+
+    $("#id_dg").change(function () {
+        var dgID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_dir_nac' %}",
+            data: {
+                'dg': dgID
+            },
+            success: function (data) {
+                $("#id_dn").html(data);
+            }
+        });
+    });
+
+ </script>
+
+{% elif page == 'form_sec' or page == 'form_dep' %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script type="text/javascript">
+
+    function loadDirGeralAndNac(instituicaoID) {
+        if (instituicaoID) {
+            $.ajax({
+                url: "{% url 'ajax_load_dir_geral' %}",
+                data: {
+                    'id': instituicaoID
+                },
+                success: function (data) {
+                    console.log("data:", data);
+
+                    // Clear previous options and add default options
+                    $("#id_dg").empty().append('<option value="">-----Escolha Direção Geral----</option>');
+                    $("#id_dn").empty().append('<option value="">-----Escolha Direção Nacional----</option>');
+
+                    // Populate #id_dg with dir_geral options
+                    data.dir_geral.forEach(function(item) {
+                        $("#id_dg").append(new Option(item.nome, item.id));
+                    });
+
+                    // Populate #id_dn with dir_nac options
+                    data.dir_nac.forEach(function(item) {
+                        $("#id_dn").append(new Option(item.nome, item.id));
+                    });
+                }
+            });
+        } else {
+            // Clear dropdowns if instituicaoID is not set
+            $("#id_dg").empty().append('<option value="">-----Escolha Direção Geral----</option>');
+            $("#id_dn").empty().append('<option value="">-----Escolha Direção Nacional----</option>');
+        }
+    }
+
+    $(document).ready(function() {
+        var defaultInstituicaoID = $("#id_instituicao").val();
+        loadDirGeralAndNac(defaultInstituicaoID);
+    });
+
+    $("#id_instituicao").change(function () {
+        var instituicaoID = $(this).val();
+        loadDirGeralAndNac(instituicaoID);
+    });
+    
+
+    $("#id_dg").change(function () {
+        var dgID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_dir_nac' %}",
+            data: {
+                'dg': dgID
+            },
+            success: function (data) {
+                $("#id_dn").html(data);
+            }
+        });
+    });
+
+    $("#id_dn").change(function () {
+        var dnID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_departamento' %}",
+            data: {
+                'id': dnID
+            },
+            success: function (data) {
+                $("#id_dep").html(data);
+            }
+        });
+    });
+
+</script>
+
+
+{% elif page == 'form_sec_update' or page == 'form_dep_update' %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script type="text/javascript">
+
+    function loadDirGeralAndNac(instituicaoID) {
+        if (instituicaoID) {
+            $.ajax({
+                url: "{% url 'ajax_load_dir_geral' %}",
+                data: {
+                    'id': instituicaoID
+                },
+                success: function (data) {
+                    console.log("data:", data);
+
+                    // Clear previous options and add default options
+                    $("#id_dg").empty().append('<option value="">-----Escolha Direção Geral----</option>');
+                    $("#id_dn").empty().append('<option value="">-----Escolha Direção Nacional----</option>');
+
+                    // Populate #id_dg with dir_geral options
+                    data.dir_geral.forEach(function(item) {
+                        $("#id_dg").append(new Option(item.nome, item.id));
+                    });
+
+                    // Populate #id_dn with dir_nac options
+                    data.dir_nac.forEach(function(item) {
+                        $("#id_dn").append(new Option(item.nome, item.id));
+                    });
+                }
+            });
+        } else {
+            // Clear dropdowns if instituicaoID is not set
+            $("#id_dg").empty().append('<option value="">-----Escolha Direção Geral----</option>');
+            $("#id_dn").empty().append('<option value="">-----Escolha Direção Nacional----</option>');
+        }
+    }
+
+    // $(document).ready(function() {
+    //     var defaultInstituicaoID = $("#id_instituicao").val();
+    //     loadDirGeralAndNac(defaultInstituicaoID);
+    // });
+
+    $("#id_instituicao").change(function () {
+        var instituicaoID = $(this).val();
+        loadDirGeralAndNac(instituicaoID);
+    });
+    
+
+    $("#id_dg").change(function () {
+        var dgID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_dir_nac' %}",
+            data: {
+                'dg': dgID
+            },
+            success: function (data) {
+                $("#id_dn").html(data);
+            }
+        });
+    });
+
+    $("#id_dn").change(function () {
+        var dnID = $(this).val();
+        // console.log("postId:" + postId);
+        $.ajax({
+            url: "{% url 'ajax_load_departamento' %}",
+            data: {
+                'id': dnID
+            },
+            success: function (data) {
+                $("#id_dep").html(data);
+            }
+        });
+    });
+
+</script>
+
+{% elif page == 'form_dg' or page == 'form_dn' %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script type="text/javascript">
+
+</script>
+
+
+
+{% endif %}
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}

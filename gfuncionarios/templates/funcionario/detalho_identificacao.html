@@ -1,0 +1,59 @@
+{% extends 'funcionario/detalho.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_funcionario_detail_tab %}
+
+<div class="card">
+<div class="card-body">
+	
+	<div class="row">
+		<div class="col-sm-4 mt-3"><b class="text-muted" style="margin-right:30px ">ID GRP</b>: {% if objects.id_grp %}{{objects.id_grp}}{% else %}-{% endif %}</div>
+
+		<div class="col-sm-4 mt-3"><b class="text-muted" style="margin-right:30px ">NSS</b>: {% if objects.nss %}{{objects.nss}}{% else %}-{% endif %}</div>
+		
+		<div class="col-sm-4 mt-3"><b class="text-muted" style="margin-right:30px ">Code Vendor</b>: {% if objects.code_vendor %}{{objects.code_vendor}}{% else %}-{% endif %}</div>
+		
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Email</b>: {% if objects.email %}{{objects.email}}{% else %}-{% endif %}</div>
+		<div class="col-sm-3 mt-3"><b class="text-muted" style="margin-right:30px ">N&uacute; Tel.</b>: {% if objects.nu_telemovel %}{{objects.nu_telemovel}}{% else %}-{% endif %}</div>
+		<div class="col-sm-3 mt-3"><b class="text-muted" style="margin-right:30px ">N&uacute; Emis</b>: {% if objects.nu_emis %}{{objects.nu_emis}}{% else %}-{% endif %}</div>
+
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">N&uacute; Eleitoral</b>: {% if objects.nu_eleitoral %}{{objects.nu_eleitoral}}{% else %}-{% endif %}</div>
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Data Emiss&atilde;o</b>: {% if objects.data_emissao_eleitoral %}{{objects.data_emissao_eleitoral|date:"d-m-Y"}}{% else %}-{% endif %}</div>
+
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">N&uacute; BI</b>: {% if objects.nu_bi %}{{objects.nu_bi}}{% else %}-{% endif %}</div>
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Data Validade BI</b>: {% if objects.data_validade_bi %}{{objects.data_validade_bi|date:"d-m-Y"}}{% else %}-{% endif %}</div>
+
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">N&uacute; Carta Condu&ccedil;&atilde;o</b>: {% if objects.nu_conducao %}{{objects.nu_conducao}}{% else %}-{% endif %}</div>
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Data Validade Carta Condu&ccedil;&atilde;o</b>: {% if objects.data_validade_conducao %}{{objects.data_validade_conducao|date:"d-m-Y"}}{% else %}-{% endif %}</div>
+
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Nome Pai</b>: {% if objects.nome_pai %}{{objects.nome_pai}}{% else %}-{% endif %}</div>
+		<div class="col-sm-6 mt-3"><b class="text-muted" style="margin-right:30px ">Nome M&atilde;e</b>: {% if objects.nome_mae %}{{objects.nome_mae}}{% else %}-{% endif %}</div>
+		<hr class="mt-3">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-6 mt-5"><b class="text-muted" style="margin-right:30px ">Dados Inserido Por:</b> <input type="text" class="form-control" readonly value="{% if objects.inserido_por %}{{objects.inserido_por}}{% else %}-{% endif %}"></div>
+				<div class="col-sm-6 mt-5"><b class="text-muted" style="margin-right:30px ">Dados Inserido em:</b> <input type="text" class="form-control" readonly value="{% if objects.inserido_em %}{{objects.inserido_em|date:'d-m-Y H:i:s'}}{% else %}-{% endif %}"></div>
+
+				<div class="col-sm-6 mt-5"><b class="text-muted" style="margin-right:30px ">&Uacute;ltima Altera&ccedil;&atilde;o Por:</b> <input type="text" class="form-control" readonly value="{% if objects.alterado_por %}{{objects.alterado_por}}{% else %}-{% endif %}"></div>
+				<div class="col-sm-6 mt-5"><b class="text-muted" style="margin-right:30px ">&Uacute;ltima Altera&ccedil;&atilde;o em:</b> <input type="text" class="form-control" readonly value="{% if objects.alterado_em %}{{objects.alterado_em|date:'d-m-Y H:i:s'}}{% else %}-{% endif %}"></div>
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>
+
+					
+<script type="text/javascript">
+  //load Imagen
+    function myFunction() {
+      var image = document.getElementById("output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}

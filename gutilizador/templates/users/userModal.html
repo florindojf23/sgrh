@@ -1,0 +1,215 @@
+{% load static %}
+<!--begin::Modal - Create App-->
+		<div class="modal fade" id="modal_id_create_user" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-900px">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Modal header-->
+					<div class="modal-header">
+						<!--begin::Modal title-->
+						<h2>Rejistu Utilizador Foun</h2>
+						<!--end::Modal title-->
+						<!--begin::Close-->
+						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<span class="svg-icon svg-icon-1">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+								</svg>
+							</span>
+							<!--end::Svg Icon-->
+						</div>
+						<!--end::Close-->
+					</div>
+					<!--end::Modal header-->
+					<!--begin::Modal body-->
+					<div class="modal-body py-lg-10 px-lg-10">
+						<!--begin::Stepper-->
+						<div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_modal_create_app_stepper">
+							<!--begin::Content-->
+							<div class="flex-row-fluid py-lg-5 px-lg-15">
+								<!--begin::Form-->
+								<form class="form" action="{% url 'createUser' %}" method="POST" id="kt_modal_create_app_form">
+								{% csrf_token %}
+									<!--begin::Step 1-->
+									<div class="current" data-kt-stepper-element="content">
+										<div class="w-100">
+											<!--begin::Input group-->
+											<div class="row fv-row mb-5">
+												<div class="col-md-6">
+													<!--begin::Label-->
+													<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+														<span class="required">Naran Propriu</span>
+														<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your unique username"></i>
+													</label>
+													<!--end::Label-->
+													<!--begin::Input-->
+													<input type="text" required class="form-control form-control-lg form-control-solid" name="username" placeholder="" value="" />
+													<!--end::Input-->
+												</div>
+												<div class="col-md-6">
+													<!--begin::Label-->
+													<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+														<span class="required">Apelidu</span>
+														<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your apelido"></i>
+													</label>
+													<!--end::Label-->
+													<!--begin::Input-->
+													<input type="text" required class="form-control form-control-lg form-control-solid" name="apelido" placeholder="" value="" />
+													<!--end::Input-->
+												</div>
+											</div>
+											<!--end::Input group-->
+											<!--begin::Input group-->
+										<div class="fv-row mb-5">
+											<label class="required fs-6 fw-bold mb-2">Data Moris</label>
+											<div class="position-relative d-flex align-items-center">
+												<!--begin::Icon-->
+												<!--begin::Svg Icon | path: icons/duotune/general/gen014.svg-->
+												<span class="bi bi-calendar3 position-absolute mx-4">
+													
+												</span>
+												<!--end::Svg Icon-->
+												<!--end::Icon-->
+												<!--begin::Datepicker-->
+												<input  type="date" required class="form-control form-control-solid ps-12" placeholder="Pick date range" name="dob" />
+												<!--end::Datepicker-->
+											</div>
+										</div>
+										<!--end::Input group-->
+											<!--begin::Input group-->
+										<div class="fv-row mb-5">
+											<!--begin::Label-->
+											<label class="required fs-6 fw-bold mb-2">Grupo Utilizador</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<select required class="form-select form-select-solid" data-control="" data-placeholder="Select an option" name="user_group" required id="user_group">
+												<option>-----Hili Grupo Utilizador-----</option>
+												{% for i in allGroup %}
+												<option value="{{i.id}}">{{i.name}}</option>
+												{% endfor %}
+											</select>
+											<!--end::Input-->
+										</div>
+										<!-- Municipio - Initially Hidden -->
+	                                    <div class="fv-row mb-5" id="municipio_field" style="display:none;">
+	                                        <label class="required fs-6 fw-bold mb-2">Municipio</label>
+	                                        <select required class="form-select form-select-solid" data-control="select2" data-placeholder="Select an option" name="municipio">
+	                                            <option>-----Hili Municipio-----</option>
+	                                            {% for i in allMunicipio %}
+	                                            <option value="{{i.id_municipio}}">{{i.municipio}}</option>
+	                                            {% endfor %}
+	                                        </select>
+	                                    </div>
+										<!--end::Input group-->
+										</div>
+									</div>
+									<!--end::Step 1-->
+									<!--begin::Actions-->
+									<div class="d-flex justify-content-end pt-10">
+										<!--begin::Wrapper-->
+										<button type="submit" class="btn btn-lg btn-primary">
+											<span class="indicator-label">Submit <i class="bi bi-box-arrow-in-right"></i></span>
+										</button>
+										<!--end::Wrapper-->
+									</div>
+									<!--end::Actions-->
+								</form>
+								<!--end::Form-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Stepper-->
+					</div>
+					<!--end::Modal body-->
+				</div>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
+		</div>
+		<!--end::Modal - Create App-->
+
+
+		<div class="modal fade" id="modal_id_create_user_funcionario" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-900px">
+				<!--begin::Modal content-->
+				<div class="modal-content">
+					<!--begin::Modal header-->
+					<div class="modal-header">
+						<!--begin::Modal title-->
+						<h2>Rejistu Utilizador Funcion&aacute;rio</h2>
+						<!--end::Modal title-->
+						<!--begin::Close-->
+						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<span class="svg-icon svg-icon-1">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+								</svg>
+							</span>
+							<!--end::Svg Icon-->
+						</div>
+						<!--end::Close-->
+					</div>
+					<!--end::Modal header-->
+					<!--begin::Modal body-->
+					<div class="modal-body py-lg-10 px-lg-10">
+					    <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_modal_create_app_stepper">
+					        <div class="flex-row-fluid py-lg-5 px-lg-15">
+					            <form class="form" action="{% url 'createUserFuncionario' %}" method="POST" id="kt_modal_create_app_form">
+					                {% csrf_token %}
+					                <div class="current" data-kt-stepper-element="content">
+					                    <div class="w-100">
+					                        <div class="row fv-row mb-5">
+					                            <div class="col-md-6">
+					                                <div class="form-group">
+													    <label for="search_funcionario">Buscar Funcionário (Nome Funcionário / ID SIGAP)</label>
+													    <input type="text" id="search_funcionario" class="form-control" placeholder="Type to search...">
+													    <input type="hidden" id="selected_funcionario_id" name="funcionario_id">
+													</div>
+													<div id="search_results" class="list-group" style="display:none;"></div>
+					                            </div>
+					                        </div>
+					                        <div class="fv-row mb-5">
+					                            <label class="required fs-6 fw-bold mb-2">Grupo Utilizador</label>
+					                            <select required class="form-select form-select-solid" name="user_group" id="user_group1">
+					                                <option>-----Escolha Grupo Utilizador-----</option>
+					                                {% for i in allGroup %}
+					                                <option value="{{i.id}}">{{i.name}} | {{i.id}}</option>
+					                                {% endfor %}
+					                            </select>
+					                        </div>
+					                        <!-- Municipio - Initially Hidden -->
+					                        <div class="fv-row mb-5" id="municipio_field1" style="display:none;">
+					                            <label class="required fs-6 fw-bold mb-2">Municipio</label>
+					                            <select required class="form-select form-select-solid" name="municipio">
+					                                <option>-----Hili Municipio-----</option>
+					                                {% for i in allMunicipio %}
+					                                <option value="{{i.id_municipio}}">{{i.municipio}}</option>
+					                                {% endfor %}
+					                            </select>
+					                        </div>
+					                    </div>
+					                </div>
+					                <div class="d-flex justify-content-end pt-10">
+					                    <button type="submit" class="btn btn-lg btn-primary">
+					                        <span class="indicator-label">Submit <i class="bi bi-box-arrow-in-right"></i></span>
+					                    </button>
+					                </div>
+					            </form>
+					        </div>
+					    </div>
+					</div>
+
+					<!--end::Modal body-->
+				</div>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
+		</div>
+
+

@@ -1,0 +1,201 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				{% include 'unidade_ministerio/head_tab_unidade_organica.html' %}
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h4>{{title}} {% if objects.nome %} - {{objects.nome|upper}}{%endif%}</h4>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row">
+							{% for i in instituicao_report %}
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center" onclick="loadData('direcao_geral')">
+								Direcao Geral<br>{{i.total_direcoes_gerais}}
+								</div>
+							</div>
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center" onclick="loadData('direcao_nacional')">
+								Direcao Nacional<br>{{i.total_direcoes_nacionais}}
+								</div>
+							</div>
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center" onclick="loadData('departamento')">
+								Depatamentos<br>{{i.total_departamentos}}
+								</div>
+							</div>
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center"onclick="loadData('seccao')">
+								Seccoes<br>{{i.total_seccoes}}
+								</div>
+							</div>
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center" onclick="loadData('escola')">
+								Escola<br>{{i.total_escolas}}
+								</div>
+							</div>
+							{% endfor %}
+
+						</div>
+						<!--end::Table container-->
+
+						<div id="table-container" class="table-responsive mt-5 p-2 border rounded border-primary border-dashed" style="display: none;">
+							<table id="data-table" class="table table-bordered">
+							    <thead>
+							        <tr>
+							            <th rowspan="2"><b id="nome_coluna"></b></th>
+							            <th colspan="3" class="text-center"><b>Numero Funcionario</b></th>
+							        </tr>
+							        <tr>
+							            <th class="text-center"><b>Masculino</b></th>
+							            <th class="text-center"><b>Feminino</b></th>
+							            <th class="text-center"><b>Total</b></th>
+							            <!-- Add table headers as needed -->
+							        </tr>
+							    </thead>
+							    <tbody>
+							        <!-- Data will be populated by AJAX -->
+							    </tbody>
+							</table>
+						</div>
+
+						<div class="table-responsive border rounded border-success border-dashed mt-5 px-3">
+
+							<div id="idTabelaListaFuncionario" class="mt-5"></div>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+ <script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script type="text/javascript">
+const getDataUrl = "{% url 'get_data' %}";
+function loadData(dataType) {
+    // Show the table container
+    document.getElementById('table-container').style.display = 'block';
+    if (dataType === 'direcao_geral') {
+        document.getElementById('nome_coluna').innerText = 'Direção Geral'; 
+    }
+    else if (dataType === 'direcao_nacional') {
+        document.getElementById('nome_coluna').innerText = 'Direção Nacional'; 
+    }
+    else if (dataType === 'departamento') {
+        document.getElementById('nome_coluna').innerText = 'Departamento'; 
+    }
+    else if (dataType === 'seccao') {
+        document.getElementById('nome_coluna').innerText = 'Secção'; 
+    }
+    else if (dataType === 'escola') {
+        document.getElementById('nome_coluna').innerText = 'Escolas'; 
+    }
+
+    // Clear any existing rows in the table body
+    const tableBody = document.getElementById('data-table').querySelector('tbody');
+    tableBody.innerHTML = '';
+
+    // AJAX request to fetch data based on the dataType
+    fetch(`${getDataUrl}?type=${dataType}`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                // Create a new row for each item
+                const row = document.createElement('tr');
+                
+                // Populate the row with data columns
+                row.innerHTML = `
+                    <td>${item.nome}</td>
+                    <td class="text-center"><a href="#" id="detallulistadgm" data-coluna="${dataType}" data-unidade-id="${item.id}" data-datatype="Masculino">${item.totalfunm}</a></td>
+                    <td class="text-center"><a href="#" id="detallulistadgf" data-coluna="${dataType}" data-unidade-id="${item.id}" data-datatype="Feminino">${item.totalfunf}</a></td>
+                    <td class="text-center"><a href="#" id="detallulistadgt" data-coluna="${dataType}" data-unidade-id="${item.id}" data-datatype="">${item.totalfun}</td>
+                `;
+                
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+    var id = '';
+    var tipo = '';
+    var coluna = '';
+    procuraListaFuncionario(id,tipo,coluna);
+}
+
+$(document).on('click', '#detallulistadgt', function (e) {
+    e.preventDefault();
+    var id = $(this).data('unidade-id');
+    var tipo = $(this).data('datatype');
+    var coluna = $(this).data('coluna');
+    console.log('ID: ' + id + ' Tipo: ' + tipo+ ' coluna: ' + coluna);
+    procuraListaFuncionario(id,tipo,coluna);
+});
+
+$(document).on('click', '#detallulistadgm', function (e) {
+    e.preventDefault();
+    var id = $(this).data('unidade-id');
+    var tipo = $(this).data('datatype');
+    var coluna = $(this).data('coluna');
+    console.log('ID: ' + id + ' Tipo: ' + tipo+ ' coluna: ' + coluna);
+    procuraListaFuncionario(id,tipo,coluna);
+});
+
+$(document).on('click', '#detallulistadgf', function (e) {
+    e.preventDefault();
+    var id = $(this).data('unidade-id');
+    var tipo = $(this).data('datatype');
+    var coluna = $(this).data('coluna');
+    console.log('ID: ' + id + ' Tipo: ' + tipo+ ' coluna: ' + coluna);
+    procuraListaFuncionario(id,tipo,coluna);
+});
+
+
+
+function procuraListaFuncionario(id, tipo,coluna) {
+    $.ajax({
+        method: "GET",
+        url: "{% url 'ajax_load_lista_funcionario_dashboard_organica' %}",
+        data: {
+            id: id,
+            coluna: coluna,
+            tipo: tipo
+        },
+        dataType: "html",
+        success: function (data) {
+            $("#idTabelaListaFuncionario").html(data);
+            $("#dataTable").DataTable();
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+
+</script>
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+		{% include 'exports/exports_custom1.html' %}
+{% endblock %}

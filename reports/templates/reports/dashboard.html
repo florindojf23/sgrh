@@ -1,0 +1,277 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+	<!--begin::Container-->
+	<div id="kt_content_container" class="container-xxl">
+		<!--begin::Row-->
+		<div class="row gy-5 g-xl-8">
+			<!--begin::Col-->
+			<div class="col-xl-12">
+				<div class="card p-5">
+					<!--begin::Header-->
+					<div class="card-header border-0 pt-5">
+						<h4>Dashboard Estat&iacute;sticas Gerais</h4>
+					</div>
+					<!--end::Header-->
+					<!--begin::Body-->
+					<div class="card-body py-3">
+						<!--begin::Table container-->
+						<div class="row">
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center">
+								<h4>{{totalFuncionario|intcomma}}</h4>Total Funcionario Registados<br>
+								</div>
+							</div>
+							<div class="col-sm-4 mt-3">
+								<div class="border border-success py-3 rounded text-center">
+								<h4>{{totalFuncionarioM|intcomma}}</h4> Total Masculino
+								</div>
+							</div>
+							<div class="col-sm-4 my-3">
+								<div class="border border-success py-3 rounded text-center">
+								<h4>{{totalFuncionarioF|intcomma}}</h4> Total Feminino
+								</div>
+							</div>
+<br>
+<hr>
+							<div class="col-sm-6 mt-3">
+								<div class="card border border-secondary">
+									<div class="d-flex justify-content-end py-2 mb-1 rounded bg-white">
+						                <div class="d-flex flex-wrap my-1">
+						                    <ul class="nav nav-pills">
+						                      <li class="nav-item m-0">
+						                        <a class="btn btn-sm btn-light-primary btn-active-primary active" data-bs-toggle="tab" href="#table_ca">
+						                          <i class="bi bi-table fs-1x "></i> 
+						                        </a>
+						                      </li>
+						                      <li class="nav-item m-0">
+						                        <a class="btn btn-sm btn-light-success btn-active-success me-3" data-bs-toggle="tab" href="#chart_ca">
+						                          <i class="bi bi-bar-chart fs-1x "></i> 
+						                        </a>
+						                      </li>
+						                    </ul>
+						                </div>
+					                </div>
+					                <div class="tab-content">
+										<div id="table_ca" class="tab-pane fade show active">
+											<div class="text-center pt-4">Dados por Estado e Genero </div>
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-row-dashed table-row-gray-900 table-column-gray-900 align-middle gs-0 gy-4">
+														<tr class="">
+															<th class=""><b>Estado</b></th>
+															<th class=""><b>Feminino</b></th>
+															<th class=""><b>Masculino</b></th>
+															<th class=""><b>Total</b></th>
+														</tr>
+														{% for i in contrlo_ativo_sexo %}
+															<tr>
+																<th><b>{{i.controlo_ativo}}</b></th>
+																<th><a href="{% url 'ListaRelatorio1' 'controlo_ativo' i.controlo_ativo 'Feminino' %}">{{i.feminino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'controlo_ativo' i.controlo_ativo 'Masculino' %}">{{i.masculino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'controlo_ativo' i.controlo_ativo 'Total' %}">{{i.total|intcomma}}</a></th>
+															</tr>
+														{% endfor %}
+													</table>
+												</div>
+											</div>
+										</div>
+										<div id="chart_ca" class="tab-pane fade">
+											<div class="text-center pt-4">Gr&aacute;fiku por Estado e Genero </div>
+											<div class="card-body">
+												<canvas id="ChartFuncionarioPivotCASEXO" width="463px" height="231px"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-sm-6 mt-3">
+								<div class="card border border-secondary">
+									<div class="d-flex justify-content-end py-2 mb-1 rounded bg-white">
+					                  <div class="d-flex flex-wrap my-1">
+					                    <ul class="nav nav-pills">
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-primary btn-active-primary active" data-bs-toggle="tab" href="#table_tf">
+					                          <i class="bi bi-table fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-success btn-active-success me-3" data-bs-toggle="tab" href="#chart_tf">
+					                          <i class="bi bi-bar-chart fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                    </ul>
+					                  </div>
+					                </div>
+									<div class="tab-content">
+										<div id="table_tf" class="tab-pane fade show active">
+											<div class="text-center pt-4">Dados por Tipo Funcionario e Genero </div>
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-row-dashed table-row-gray-900 table-column-gray-900 align-middle gs-0 gy-4">
+														<tr class="">
+															<th class=""><b>Tipo Funcionario</b></th>
+															<th class=""><b>Feminino</b></th>
+															<th class=""><b>Masculino</b></th>
+															<th class=""><b>Total</b></th>
+														</tr>
+														{% for i in tipo_funcionario_sexo %}
+															<tr>
+																<th><b>{{i.tipo_funcionario}}</b></th>
+																<th><a href="{% url 'ListaRelatorio1' 'tipo_funcionario' i.tipo_funcionario 'Feminino' %}">{{i.feminino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'tipo_funcionario' i.tipo_funcionario 'Masculino' %}">{{i.masculino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'tipo_funcionario' i.tipo_funcionario 'Total' %}">{{i.total|intcomma}}</a></th>
+															</tr>
+														{% endfor %}
+													</table>
+												</div>
+											</div>
+										</div>
+										<div id="chart_tf" class="tab-pane fade">
+												<div class="text-center pt-4">Gr&aacute;fiku por Tipo Funcionario e Genero </div>
+												<div class="card-body">
+													<canvas id="ChartFuncionarioPivotTFSEXO" width="463px" height="231px"></canvas>
+												</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-6 mt-3">
+								<div class="card border border-secondary">
+									<div class="d-flex justify-content-end py-2 mb-1 rounded bg-white">
+					                  <div class="d-flex flex-wrap my-1">
+					                    <ul class="nav nav-pills">
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-primary btn-active-primary active" data-bs-toggle="tab" href="#table_gi">
+					                          <i class="bi bi-table fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-success btn-active-success me-3" data-bs-toggle="tab" href="#chart_gi">
+					                          <i class="bi bi-bar-chart fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                    </ul>
+					                  </div>
+					                </div>
+									<div class="tab-content">
+										<div id="table_gi" class="tab-pane fade show active">
+											<div class="text-center pt-4">Dados por Grupo de Idade e Genero </div>
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-row-dashed table-row-gray-900 table-column-gray-900 align-middle gs-0 gy-4">
+														<tr class="">
+															<th class=""><b>Grupo de Idade</b></th>
+															<th class=""><b>Feminino</b></th>
+															<th class=""><b>Masculino</b></th>
+															<th class=""><b>Total</b></th>
+														</tr>
+														{% for i in grupo_idade_sexo %}
+															<tr>
+																<th><b>{{i.grupu_idade}}</b></th>
+																<th><a href="{% url 'ListaRelatorio1' 'grupu_idade' i.grupu_idade 'Feminino' %}">{{i.feminino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'grupu_idade' i.grupu_idade 'Masculino' %}">{{i.masculino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'grupu_idade' i.grupu_idade 'Total' %}">{{i.total|intcomma}}</a></th>
+															</tr>
+														{% endfor %}
+													</table>
+												</div>
+											</div>
+										</div>
+										<div id="chart_gi" class="tab-pane fade">
+												<div class="text-center pt-4">Gr&aacute;fiku por Grupo de Idade e Genero </div>
+												<div class="card-body">
+													<canvas id="ChartFuncionarioPivotGISEXO" width="463px" height="231px"></canvas>
+												</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-6 mt-3">
+								<div class="card border border-secondary">
+									<div class="d-flex justify-content-end py-2 mb-1 rounded bg-white">
+					                  <div class="d-flex flex-wrap my-1">
+					                    <ul class="nav nav-pills">
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-primary btn-active-primary active" data-bs-toggle="tab" href="#table_lt">
+					                          <i class="bi bi-table fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                      <li class="nav-item m-0">
+					                        <a class="btn btn-sm btn-light-success btn-active-success me-3" data-bs-toggle="tab" href="#chart_lt">
+					                          <i class="bi bi-bar-chart fs-1x "></i> 
+					                        </a>
+					                      </li>
+					                    </ul>
+					                  </div>
+					                </div>
+									<div class="tab-content">
+										<div id="table_lt" class="tab-pane fade show active">
+											<div class="text-center pt-4">Dados por Local de Trabalho e Genero </div>
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-row-dashed table-row-gray-900 table-column-gray-900 align-middle gs-0 gy-4">
+														<tr class="">
+															<th class=""><b>Local de Trabalho</b></th>
+															<th class=""><b>Feminino</b></th>
+															<th class=""><b>Masculino</b></th>
+															<th class=""><b>Total</b></th>
+														</tr>
+														{% for i in local_trabalho_sexo %}
+															<tr>
+																<th><b>{{i.local_trabalho}}</b></th>
+																<th><a href="{% url 'ListaRelatorio1' 'local_trabalho' i.local_trabalho 'Feminino' %}">{{i.feminino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'local_trabalho' i.local_trabalho 'Masculino' %}">{{i.masculino|intcomma}}</a></th>
+																<th><a href="{% url 'ListaRelatorio1' 'local_trabalho' i.local_trabalho 'Total' %}">{{i.total|intcomma}}</a></th>
+															</tr>
+														{% endfor %}
+													</table>
+												</div>
+											</div>
+										</div>
+										<div id="chart_lt" class="tab-pane fade">
+												<div class="text-center pt-4">Gr&aacute;fiku por Local de Trabalho e Genero </div>
+												<div class="card-body">
+													<canvas id="ChartFuncionarioPivotLTSEXO" width="463px" height="231px"></canvas>
+												</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+						</div>
+						<!--end::Table container-->
+					</div>
+					
+				</div>
+			</div>
+			<!--end::Col-->
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'assets/js/jquery.min.js'%}"> </script>
+<script src="{% static 'assets/js/chart.min.js' %}"></script>
+<script src="{% static 'assets/js/chart.dataTables.js' %}"></script>
+<script type="text/javascript">
+	
+		{% include 'charts/custom_charts.js' %}
+</script>
+		{% include 'exports/exports_custom1.html' %}
+{% endblock %}
